@@ -7,7 +7,11 @@
     android:background="#fff"
     android:orientation="vertical"
     android:padding="20dp"
+<<<<<<< HEAD
     tools:context=".activity.SignUpActivity">
+=======
+    tools:context=".activity.Signup">
+>>>>>>> 97e2606599bf910e3ad30e4080e4326165845e3e
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -55,7 +59,7 @@
                     android:hint="Họ và tên">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/name"
+                        android:id="@+id/nameDangKy"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="text">
@@ -75,7 +79,7 @@
                         android:hint="Số điện thoại">
 
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/phone"
+                            android:id="@+id/phoneDangKy"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
 
@@ -92,7 +96,7 @@
                     android:hint="E-mail">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/email"
+                        android:id="@+id/emailDangKy"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
@@ -108,7 +112,7 @@
                     app:passwordToggleEnabled="true">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/password"
+                        android:id="@+id/passwordDangKy"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textPassword">
@@ -125,7 +129,7 @@
                     app:passwordToggleEnabled="true">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/confirm_password"
+                        android:id="@+id/confirm_passwordDangKy"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textPassword">

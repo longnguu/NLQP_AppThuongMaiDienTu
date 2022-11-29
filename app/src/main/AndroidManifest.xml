@@ -13,8 +13,39 @@
         android:theme="@style/Theme.AppThuongMaiDienTu"
         tools:targetApi="31">
         <activity
+<<<<<<< HEAD
             android:name=".activity.SignUpActivity"
+=======
+            android:name=".activity.UIMessenger"
+>>>>>>> 97e2606599bf910e3ad30e4080e4326165845e3e
             android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+<<<<<<< HEAD
+            android:name=".activity.MainActivity"
+=======
+            android:name=".activity.Signup"
+>>>>>>> 97e2606599bf910e3ad30e4080e4326165845e3e
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+<<<<<<< HEAD
+            android:name=".activity.LoginActivity"
+=======
+            android:name=".activity.Login"
+>>>>>>> 97e2606599bf910e3ad30e4080e4326165845e3e
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -22,18 +53,7 @@
         <activity
             android:name=".activity.MainActivity"
             android:exported="false">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
-            android:name=".activity.LoginActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
 
             <meta-data
                 android:name="android.app.lib_name"

@@ -31,6 +31,7 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_alignParentEnd="true">
+<<<<<<< HEAD
                 <ImageView
                     android:id="@+id/topnavMess"
                     android:layout_width="30dp"
@@ -39,6 +40,17 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="10dp"
+=======
+
+                <ImageView
+                    android:id="@+id/topnavMess"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="17dp"
+>>>>>>> 97e2606599bf910e3ad30e4080e4326165845e3e
                     android:layout_marginBottom="10dp"
                     android:src="@drawable/icon_messenger" />
                 <androidx.cardview.widget.CardView
@@ -47,6 +59,10 @@
                     android:layout_height="20dp"
                     app:cardCornerRadius="20dp"
                     app:cardBackgroundColor="@color/red"
+<<<<<<< HEAD
+=======
+                    android:visibility="gone"
+>>>>>>> 97e2606599bf910e3ad30e4080e4326165845e3e
                     android:layout_alignParentEnd="true">
                     <TextView
                         android:id="@+id/textUnseenMain"
@@ -54,8 +70,12 @@
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:textStyle="bold"
+<<<<<<< HEAD
                         android:textColor="#fff"
                         android:text="1"/>
+=======
+                        android:textColor="#fff" />
+>>>>>>> 97e2606599bf910e3ad30e4080e4326165845e3e
                 </androidx.cardview.widget.CardView>
 
             </RelativeLayout>
