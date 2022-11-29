@@ -8,7 +8,7 @@
     android:gravity="center_vertical"
     android:padding="20dp"
     android:id="@+id/login_layout"
-    tools:context=".Login">
+    tools:context=".activity.LoginActivity">
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -21,7 +21,7 @@
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:layout_gravity="right"
-                android:src="@drawable/logo_app"
+                android:src="@drawable/logo"
                 android:transitionName="logo_img"></ImageView>
 
             <TextView
@@ -52,15 +52,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
-                    <com.hbb20.CountryCodePicker
-                        android:id="@+id/ccp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        app:ccp_defaultPhoneCode="84"
-                        app:ccp_showNameCode="false"
-                        tools:ccp_textSize="20dp" />
+
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/til_phone"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
