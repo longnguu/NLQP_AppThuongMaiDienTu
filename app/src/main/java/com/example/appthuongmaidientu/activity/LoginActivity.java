@@ -124,24 +124,18 @@ public class LoginActivity extends AppCompatActivity {
 
                 if (checkBox_rememberUP.isChecked()) {
                     SharedPreferences.Editor editor = sharedPreferences.edit();
-
                     editor.putString("PHONE", phone);
                     editor.putString("PASSWORD", password);
                     editor.putBoolean("REMEMBER", true);
-
                     editor.commit();
-
                 } else {
                     SharedPreferences.Editor editor = sharedPreferences.edit();
-
                     editor.putString("PHONE", phone);
                     editor.putString("PASSWORD", password);
                     editor.putBoolean("REMEMBER", false);
-
                     editor.commit();
 
                 }
-
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 intent.putExtra("phone", phone);
                 startActivity(intent);
