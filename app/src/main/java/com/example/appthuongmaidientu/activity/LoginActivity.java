@@ -11,12 +11,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.appthuongmaidientu.R;
 import com.example.appthuongmaidientu.model.User;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.hbb20.CountryCodePicker;
 
 public class LoginActivity extends AppCompatActivity {
@@ -30,6 +36,7 @@ public class LoginActivity extends AppCompatActivity {
     SharedPreferences sharedPreferences;
     CheckBox checkBox_rememberUP;
     User user;
+    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
 
     SharedPreferences saveLogin;
 
@@ -46,9 +53,9 @@ public class LoginActivity extends AppCompatActivity {
         //Hiển thị tài khoản đã lưu
         sharedPreferences = getSharedPreferences("dataLogin", MODE_PRIVATE);
         if (sharedPreferences.getBoolean("REMEMBER", false) == true) {
-            ccp.setCountryForPhoneCode(+84);
             edt_phone.setText(sharedPreferences.getString("PHONE", ""));
             edt_password.setText(sharedPreferences.getString("PASSWORD", ""));
+            checkBox_rememberUP.setChecked(true);
         }
         btn_ForgetPassword.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,19 +71,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
 
-//                Pair[] pairs = new Pair[7];
-//
-//                pairs[0] = new Pair<View, String>(img, "logo_img");
-//                pairs[1] = new Pair<View, String>(logoText, "logo_Name_Tran");
-//                pairs[2] = new Pair<View, String>(slgText, "logo_Slg_Tran");
-//                pairs[3] = new Pair<View, String>(til_phone, "username_Tran");
-//                pairs[4] = new Pair<View, String>(til_password, "password_Tran");
-//                pairs[5] = new Pair<View, String>(login_btn, "btn_LogIn_Tran");
-//                pairs[6] = new Pair<View, String>(callSignUp, "btn_callSignUp_Tran");
-//
-//                ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(LoginActivity.this, pairs);
-
-                startActivity(intent/*, options.toBundle()*/);
+                startActivity(intent);
             }
         });
     }
@@ -98,56 +93,47 @@ public class LoginActivity extends AppCompatActivity {
         btn_ForgetPassword = findViewById(R.id.btn_ForgetPassword);
     }
 
-    public void rememberUP(String phone, String pass, boolean status) {
-        SharedPreferences sharedPreferences = getSharedPreferences("dataLogin", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        if (status == false) {
-            editor.clear();
-        } else {
-            editor.putString("PHONE", phone);
-            editor.putString("PASSWORD", pass);
-            editor.putBoolean("REMEMBER", status);
-        }
-        editor.commit();
-    }
 
     public void checkLogin(View view) {
         String phone = edt_phone.getText().toString();
         String password = edt_password.getText().toString();
-
         if (phone.isEmpty() || password.isEmpty()) {
             Toast.makeText(getApplicationContext(), "Vui lòng không để trống!",
                     Toast.LENGTH_LONG).show();
         } else {
-                Toast.makeText(getApplicationContext(), "Đăng nhập thành công",
-                        Toast.LENGTH_SHORT).show();
-
-                if (checkBox_rememberUP.isChecked()) {
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putString("PHONE", phone);
-                    editor.putString("PASSWORD", password);
-                    editor.putBoolean("REMEMBER", true);
-                    editor.commit();
-                } else {
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putString("PHONE", phone);
-                    editor.putString("PASSWORD", password);
-                    editor.putBoolean("REMEMBER", false);
-                    editor.commit();
-
+            databaseReference.child("users").child("+84"+phone.substring(1)).child("matKhau").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (snapshot.getValue(String.class).equals(password)){
+                        Toast.makeText(getApplicationContext(), "Đăng nhập thành công",
+                                Toast.LENGTH_SHORT).show();
+                        if (checkBox_rememberUP.isChecked()) {
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putString("PHONE", phone);
+                            editor.putString("PASSWORD", password);
+                            editor.putBoolean("REMEMBER", true);
+                            editor.commit();
+                        } else {
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putString("PHONE", phone);
+                            editor.putString("PASSWORD", password);
+                            editor.putBoolean("REMEMBER", false);
+                            editor.commit();
+                        }
+                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        intent.putExtra("phone", phone);
+                        startActivity(intent);
+                    }else Toast.makeText(getApplicationContext(), "Sai thông tin tài khoản hoặc mật khẩu",
+                            Toast.LENGTH_SHORT).show();
                 }
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                intent.putExtra("phone", phone);
-                startActivity(intent);
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                }
+            });
         }
     }
 
-    public void saveUP(View view) {
-        String phone = edt_phone.getText().toString();
-        String pass = edt_password.getText().toString();
-        boolean status = checkBox_rememberUP.isChecked();
-        // rememberUP(phone, pass, status);
-    }
 
     public void callForgetPassword(View view) {
         Intent intent = new Intent(getApplicationContext(), ForgetPasswordActivity.class);

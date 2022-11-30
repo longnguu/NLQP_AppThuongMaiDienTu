@@ -52,11 +52,9 @@ public class ForgetPasswordActivity extends AppCompatActivity {
         btn_Next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(ForgetPasswordActivity.this,  edt_phone_forgetpassword.getText().toString().trim(), Toast.LENGTH_LONG).show();
-
                     PhoneAuthOptions options =
                             PhoneAuthOptions.newBuilder(mAuth)
-                                    .setPhoneNumber(edt_phone_forgetpassword.getText().toString())       // Phone number to verify
+                                    .setPhoneNumber("+84"+edt_phone_forgetpassword.getText().toString())       // Phone number to verify
                                     .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
                                     .setActivity(ForgetPasswordActivity.this)                 // Activity (for callback binding)
                                     .setCallbacks(new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
@@ -75,7 +73,7 @@ public class ForgetPasswordActivity extends AppCompatActivity {
                                             super.onCodeSent(verificationID, forceResendingToken);
                                             goToVertifuOTP(edt_phone_forgetpassword.getText().toString(), verificationID);
                                         }
-                                    })          // OnVerificationStateChangedCallbacks
+                                    })// OnVerificationStateChangedCallbacks
                                     .build();
                     PhoneAuthProvider.verifyPhoneNumber(options);
             }

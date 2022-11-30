@@ -147,6 +147,9 @@ public class SignUpActivity extends AppCompatActivity {
         intent.putExtra("phone", phone);
         intent.putExtra("dh", 1);
         intent.putExtra("mVerificationID", verificationID);
+        intent.putExtra("email",reg_email.getText().toString());
+        intent.putExtra("name",reg_name.getText().toString());
+        intent.putExtra("password",reg_password.getText().toString());
         startActivity(intent);
     }
 }
