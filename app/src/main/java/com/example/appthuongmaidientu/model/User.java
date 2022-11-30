@@ -1,7 +1,24 @@
 package com.example.appthuongmaidientu.model;
 
 public class User {
-    String idUser,tenUser,email,matKhau,diaChi,SDT,thongTinThanhToan,imgUS;
+    String idUser;
+    String tenUser;
+    String email;
+    String matKhau;
+    String diaChi;
+    String SDT;
+    String thongTinThanhToan;
+    String imgUS;
+
+    public String getAnhnen() {
+        return anhnen;
+    }
+
+    public void setAnhnen(String anhnen) {
+        this.anhnen = anhnen;
+    }
+
+    String anhnen;
 
     public String getImgUS() {
         return imgUS;
