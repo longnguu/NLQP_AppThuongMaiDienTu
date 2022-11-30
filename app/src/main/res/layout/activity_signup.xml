@@ -7,7 +7,7 @@
     android:background="#fff"
     android:orientation="vertical"
     android:padding="20dp"
-    tools:context=".activity.SignUpActivity">
+    tools:context=".Signup">
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -19,7 +19,7 @@
                 android:layout_width="130dp"
                 android:layout_height="130dp"
                 android:layout_gravity="right"
-                android:src="@drawable/logo"
+                android:src="@drawable/logo_app"
                 android:transitionName="logo_img"></ImageView>
 
             <TextView
@@ -38,7 +38,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto"
-                android:text="Đăng kí để bắt đầu đặt hàng"
+                android:text="Đăng kí để bắt đầu sử dụng"
                 android:textSize="18sp"
                 android:transitionName="logo_slogan"></TextView>
 
@@ -55,10 +55,24 @@
                     android:hint="Họ và tên">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/name"
+                        android:id="@+id/nameDangKy"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="text">
+
+                    </com.google.android.material.textfield.TextInputEditText>
+
+                </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="E-mail">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/emailDangKy"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
                     </com.google.android.material.textfield.TextInputEditText>
 
@@ -68,6 +82,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
+                    <com.hbb20.CountryCodePicker
+                        android:id="@+id/ccpDangKy"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        app:ccp_defaultPhoneCode="84"
+                        app:ccp_showNameCode="false"
+                        tools:ccp_textSize="20dp" />
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
@@ -75,7 +98,7 @@
                         android:hint="Số điện thoại">
 
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/phone"
+                            android:id="@+id/phoneDangKy"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
 
@@ -85,20 +108,7 @@
                 </LinearLayout>
 
 
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="E-mail">
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/email"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                    </com.google.android.material.textfield.TextInputEditText>
-
-                </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -108,7 +118,7 @@
                     app:passwordToggleEnabled="true">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/password"
+                        android:id="@+id/passwordDangKy"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textPassword">
@@ -125,7 +135,7 @@
                     app:passwordToggleEnabled="true">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/confirm_password"
+                        android:id="@+id/confirm_passwordDangKy"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textPassword">
