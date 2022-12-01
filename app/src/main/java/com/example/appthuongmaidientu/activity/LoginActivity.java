@@ -37,7 +37,6 @@ public class LoginActivity extends AppCompatActivity {
     User user;
     DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
 
-    SharedPreferences saveLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,13 +68,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
-                startActivity(intent);
-            }
-        });
-        login_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+
                 startActivity(intent);
             }
         });
@@ -138,8 +131,6 @@ public class LoginActivity extends AppCompatActivity {
             });
         }
     }
-
-
     public void callForgetPassword(View view) {
         Intent intent = new Intent(getApplicationContext(), ForgetPasswordActivity.class);
         startActivity(intent);
