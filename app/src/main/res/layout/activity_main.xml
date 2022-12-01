@@ -5,14 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="false"
-    tools:context=".MainActivity">
+    tools:context=".activity.MainActivity">
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/topnav"
         app:cardBackgroundColor="@android:color/transparent">
         <RelativeLayout
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="10dp"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:background="@android:color/transparent">
@@ -47,7 +47,6 @@
                     android:layout_height="20dp"
                     app:cardCornerRadius="20dp"
                     app:cardBackgroundColor="@color/red"
-                    android:visibility="gone"
                     android:layout_alignParentEnd="true">
                     <TextView
                         android:id="@+id/textUnseenMain"
@@ -55,7 +54,7 @@
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:textStyle="bold"
-                        android:textColor="@color/black"
+                        android:textColor="#fff"
                         android:text="1"/>
                 </androidx.cardview.widget.CardView>
 
@@ -75,27 +74,20 @@
                 android:src="@drawable/icon_cart" />
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
-    <androidx.cardview.widget.CardView
+    <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/topnav"
-        android:id="@+id/cardrecycler"
-        android:visibility="gone"
-        android:layout_above="@+id/navnav">
-        <androidx.recyclerview.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/topnav"
-            android:layout_above="@+id/navnav"
-            android:id="@+id/recycleViewMainSearch" />
-    </androidx.cardview.widget.CardView>
+        android:layout_above="@+id/navnav"
+        android:id="@+id/recycleViewMainSearch"
+        android:visibility="gone"/>
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewpg"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/navnav">
-    </androidx.viewpager.widget.ViewPager>
+        android:layout_above="@+id/navnav"
+        tools:ignore="SpeakableTextPresentCheck"></androidx.viewpager.widget.ViewPager>
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/navnav"
         android:layout_width="match_parent"
