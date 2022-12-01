@@ -28,7 +28,6 @@ import java.util.concurrent.TimeUnit;
 
 public class ForgetPasswordActivity extends AppCompatActivity {
 
-    private CountryCodePicker countryCodePicker;
     private TextInputEditText edt_phone_forgetpassword;
     private Button btn_Next;
 

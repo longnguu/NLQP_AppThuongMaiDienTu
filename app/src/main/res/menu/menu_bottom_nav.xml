@@ -4,8 +4,12 @@
         android:title="Home"
         android:icon="@drawable/ic_baseline_home_24">
     </item>
+    <item android:id="@+id/navorder"
+        android:title="Đơn hàng"
+        android:icon="@drawable/list_alt24px">
+    </item>
     <item android:id="@+id/navfavourite"
-        android:title="Favourite"
+        android:title="Yêu thích"
         android:icon="@drawable/ic_baseline_favorite_24">
     </item>
     <item android:id="@+id/navThongBao"
