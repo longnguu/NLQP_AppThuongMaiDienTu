@@ -177,7 +177,8 @@ public class HomeFragment extends Fragment {
                         sanPham.setUID(dataSnapshot.getKey());
                         sanPham.setMota(dataSnapshot1.child("mota").getValue(String.class));
                         sanPham.setGia(dataSnapshot1.child("gia").getValue(String.class));
-                        sanPham.setDaBan("0");
+                        sanPham.setDaBan(dataSnapshot1.child("daBan").getValue(String.class));
+                        sanPham.setSoluongban(dataSnapshot1.child("soluongban").getValue(String.class));
                         sanPhams.add(sanPham);
                     }
                     sanPhamAdapter.updateSanPham(sanPhams);

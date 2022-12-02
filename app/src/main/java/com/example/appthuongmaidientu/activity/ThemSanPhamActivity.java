@@ -11,8 +11,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,24 +24,32 @@ import com.example.appthuongmaidientu.model.SanPham;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class ThemSanPhamActivity extends AppCompatActivity {
     FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
     StorageReference storageReference= firebaseStorage.getReference();
     DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
     ImageView imageView;
-    TextView tenSP,loaiSP,moTa,gia,soLuong;
+    TextView tenSP,moTa,gia,soLuong;
+    Spinner loaiSP;
     ProgressDialog progressDialog;
     String mobile;
+    ArrayAdapter<String> adapter;
+    List<String> dmmmm=new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +63,29 @@ public class ThemSanPhamActivity extends AppCompatActivity {
         Button save=(Button) findViewById(R.id.saveQLSP);
         imageView = (ImageView) findViewById(R.id.qlspIMG);
         mobile=getIntent().getStringExtra("mobile");
+
+        databaseReference.child("DanhMucSanPham").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                dmmmm.clear();
+                for (DataSnapshot dataSnapshot:snapshot.getChildren()){
+                    String asd=dataSnapshot.child("id").getValue(String.class)+" - "+dataSnapshot.child("ten").getValue(String.class);
+                    dmmmm.add(asd);
+                    System.out.println(asd.split(" ")[0]);
+                    System.out.println(asd);
+                }
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        adapter  = new ArrayAdapter(this, android.R.layout.simple_spinner_item,dmmmm);
+        adapter.setDropDownViewResource(android.R.layout.simple_list_item_single_choice);
+        loaiSP.setAdapter(adapter);
         pick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -61,42 +95,42 @@ public class ThemSanPhamActivity extends AppCompatActivity {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                progressDialog.show();
-                Calendar calendar = Calendar.getInstance();
-                storageReference.child("image"+calendar.getTimeInMillis()+".png");
-                imageView.setDrawingCacheEnabled(true);
-                imageView.buildDrawingCache();
-                Bitmap bitmap = imageView.getDrawingCache();
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.PNG,100,baos);
-                byte[] data=baos.toByteArray();
-                UploadTask uploadTask = storageReference.child("image"+calendar.getTimeInMillis()+".png").putBytes(data);
-                uploadTask.addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        progressDialog.dismiss();
+                if (check()) {
+                    progressDialog.show();
+                    Calendar calendar = Calendar.getInstance();
+                    storageReference.child("image" + calendar.getTimeInMillis() + ".png");
+                    imageView.setDrawingCacheEnabled(true);
+                    imageView.buildDrawingCache();
+                    Bitmap bitmap = imageView.getDrawingCache();
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+                    byte[] data = baos.toByteArray();
+                    UploadTask uploadTask = storageReference.child("image" + calendar.getTimeInMillis() + ".png").putBytes(data);
+                    uploadTask.addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            progressDialog.dismiss();
 
-                    }
-                }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        if (taskSnapshot.getMetadata() != null) {
-                            if (taskSnapshot.getMetadata().getReference() != null) {
-                                Task<Uri> result = taskSnapshot.getMetadata().getReference().getDownloadUrl();
-                                result.addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                    @Override
-                                    public void onSuccess(Uri uri) {
-                                        String imageUrl = uri.toString();
-                                        if (imageUrl.isEmpty()){
-                                            imageUrl= "https://firebasestorage.googleapis.com/v0/b/demotmdt-26982.appspot.com/o/error-image-generic.png?alt=media&token=dbfe9456-ba97-458f-8abf-dfd6e644dd25";
-                                        }
-                                        if (check()){
-                                            SanPham sanPham=new SanPham(tenSP.getText().toString(),soLuong.getText().toString(),gia.getText().toString(), moTa.getText().toString(),imageUrl,loaiSP.getText().toString());
-                                            final String currentTimeStamp= String.valueOf(System.currentTimeMillis()).substring(0,10);
+                        }
+                    }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            if (taskSnapshot.getMetadata() != null) {
+                                if (taskSnapshot.getMetadata().getReference() != null) {
+                                    Task<Uri> result = taskSnapshot.getMetadata().getReference().getDownloadUrl();
+                                    result.addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                        @Override
+                                        public void onSuccess(Uri uri) {
+                                            String imageUrl = uri.toString();
+                                            if (imageUrl.isEmpty()) {
+                                                imageUrl = "https://firebasestorage.googleapis.com/v0/b/demotmdt-26982.appspot.com/o/error-image-generic.png?alt=media&token=dbfe9456-ba97-458f-8abf-dfd6e644dd25";
+                                            }
+                                            SanPham sanPham = new SanPham(tenSP.getText().toString(), soLuong.getText().toString(), gia.getText().toString(), moTa.getText().toString(), imageUrl, loaiSP.getSelectedItem().toString().split("")[0]);
+                                            final String currentTimeStamp = String.valueOf(System.currentTimeMillis()).substring(0, 10);
                                             sanPham.setMaSP(currentTimeStamp);
                                             sanPham.setDaBan("0");
                                             databaseReference.child("SanPham").child(mobile).child(currentTimeStamp).setValue(sanPham);
-//                                            Intent intent = new Intent(ThemSanPham.this, QuanLySanPham.class);
+//                                            Intent intent = new Intent(ThemSanPhamActivity.this, QuanLySanPhamActivity.class);
 //                                            intent.putExtra("email",getIntent().getStringExtra("email"));
 //                                            intent.putExtra("mobile",getIntent().getStringExtra("mobile"));
 //                                            intent.putExtra("name",getIntent().getStringExtra("name"));
@@ -106,17 +140,18 @@ public class ThemSanPhamActivity extends AppCompatActivity {
                                             soLuong.setText("");
                                             gia.setText("");
                                             moTa.setText("");
-                                            loaiSP.setText("");
+                                            loaiSP.setSelection(0);
                                             imageView.setImageDrawable(null);
-                                        }else
-                                            Toast.makeText(ThemSanPhamActivity.this, "Vui lòng nhập đủ thông tin", Toast.LENGTH_SHORT).show();
-                                        progressDialog.dismiss();
-                                    }
-                                });
+
+                                            progressDialog.dismiss();
+                                        }
+                                    });
+                                }
                             }
                         }
-                    }
-                });
+                    });
+                }else
+                    Toast.makeText(ThemSanPhamActivity.this, "Vui lòng nhập đủ thông tin", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -124,12 +159,12 @@ public class ThemSanPhamActivity extends AppCompatActivity {
     private void AnhXa() {
         tenSP =(TextView) findViewById(R.id.addSP_Ten);
         gia =(TextView) findViewById(R.id.addSP_Gia);
-        loaiSP =(TextView) findViewById(R.id.addSP_Loai);
+        loaiSP =(Spinner) findViewById(R.id.addSP_DanhMuc);
         moTa =(TextView) findViewById(R.id.addSP_Mota);
         soLuong =(TextView) findViewById(R.id.addSP_SoLuong);
     }
     private boolean check(){
-        if (tenSP.getText().toString().isEmpty() || gia.getText().toString().isEmpty()||loaiSP.getText().toString().isEmpty()||moTa.getText().toString().isEmpty()||soLuong.getText().toString().isEmpty()){
+        if (tenSP.getText().toString().isEmpty() || gia.getText().toString().isEmpty()||moTa.getText().toString().isEmpty()||soLuong.getText().toString().isEmpty()){
             return false;
         }else return true;
     }

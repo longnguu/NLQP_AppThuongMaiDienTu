@@ -32,7 +32,7 @@ import java.util.List;
 
 public class DetailsSanPham extends AppCompatActivity {
 
-    String mobile,email,name,namesp,motasp,giasp,img,uid;
+    String mobile,email,name,namesp,motasp,giasp,img,uid,maSP,slcSP,daBan;
     Button btnchinhsua,bthaddcart,btnchat;
     LinearLayout linearLayout;
     ImageView imageView,imgShop;
@@ -64,6 +64,9 @@ public class DetailsSanPham extends AppCompatActivity {
         giasp = getIntent().getStringExtra("giasp");
         img = getIntent().getStringExtra("imgsp");
         uid = getIntent().getStringExtra("UID");
+        maSP=getIntent().getStringExtra("maSP");
+        slcSP=getIntent().getStringExtra("slcSP");
+        daBan=getIntent().getStringExtra("daBan");
         System.out.println("uid : "+uid);
         progressDialog.show();
 
@@ -131,7 +134,13 @@ public class DetailsSanPham extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(DetailsSanPham.this, ProductEditActivity.class);
-                intent.putExtra("maSP", getIntent().getStringExtra("mobile"));
+                intent.putExtra("mobile",getIntent().getStringExtra("mobile"));
+                intent.putExtra("maSP", getIntent().getStringExtra("maSP"));
+                intent.putExtra("nameSP",namesp);
+                intent.putExtra("giaSP",giasp);
+                intent.putExtra("motaSP",motasp);
+                intent.putExtra("slcSP",slcSP);
+                intent.putExtra("daBan",daBan);
                 startActivity(intent);
             }
         });
