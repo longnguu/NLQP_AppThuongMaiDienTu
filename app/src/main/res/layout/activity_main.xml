@@ -7,22 +7,24 @@
     android:fitsSystemWindows="false"
     tools:context=".activity.MainActivity">
     <androidx.cardview.widget.CardView
+        android:layout_marginTop="30dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/topnav"
         app:cardBackgroundColor="@android:color/transparent">
         <RelativeLayout
-            android:layout_marginTop="10dp"
+
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:background="@android:color/transparent">
+            android:background="@color/yellow_pri">
             <SearchView
                 android:id="@+id/topSearchView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginHorizontal="10dp"
+                android:layout_margin="8dp"
                 android:searchIcon="@drawable/icon_search"
-                android:layout_toStartOf="@+id/topnavCart">
+                android:layout_toStartOf="@+id/topnavCart"
+                android:background="@color/white100">
             </SearchView>
             <RelativeLayout
                 android:id="@+id/layouttopnacc"

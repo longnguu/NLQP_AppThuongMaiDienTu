@@ -1,8 +1,8 @@
 package com.example.appthuongmaidientu.model;
 
 public class DanhMuc {
-    String name,mota;
-    int hinh;
+    String name,mota,hinhanh,iddm;
+
 
     public String getName() {
         return name;
@@ -20,17 +20,25 @@ public class DanhMuc {
         this.mota = mota;
     }
 
-    public int getHinh() {
-        return hinh;
+    public String getHinhanh() {
+        return hinhanh;
     }
 
-    public void setHinh(int hinh) {
-        this.hinh = hinh;
+    public String getIddm() {
+        return iddm;
     }
 
-    public DanhMuc(String name, String mota, int hinh) {
+    public void setIddm(String iddm) {
+        this.iddm = iddm;
+    }
+
+    public void setHinhanh(String hinhanh) {
+        this.hinhanh = hinhanh;
+    }
+
+    public DanhMuc(String name, String hinhanh, String iddm) {
         this.name = name;
-        this.mota = mota;
-        this.hinh = hinh;
+        this.hinhanh = hinhanh;
+        this.iddm = iddm;
     }
 }
