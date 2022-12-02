@@ -190,6 +190,30 @@ public class HomeFragment extends Fragment {
 
             }
         });
+        EventScroll();
+        danhMucAdapter = new DanhMucAdapter(danhMucs, getContext());
+        GridLayoutManager linearLayoutManager = new GridLayoutManager(getContext(),1,RecyclerView.HORIZONTAL,false);
+        recyclerView.setAdapter(danhMucAdapter);
+        recyclerView.setLayoutManager(linearLayoutManager);
+
+        sanPhamAdapter=new SanPhamAdapter(sanPhams,getContext());
+        linearLayoutManager = new GridLayoutManager(getContext(),2,RecyclerView.VERTICAL,false);
+        recyclerViewSP.setAdapter(sanPhamAdapter);
+        recyclerViewSP.setLayoutManager(linearLayoutManager);
+
+
+        dmspAdapter = new DMSPAdapter(dmsps, getContext());
+        linearLayoutManager = new GridLayoutManager(getContext(),2,RecyclerView.HORIZONTAL,false);
+        recyclerViewDMSP.setAdapter(dmspAdapter);
+        recyclerViewDMSP.setLayoutManager(linearLayoutManager);
+
+
+
+        autoSildeImages();
+        super.onViewCreated(view, savedInstanceState);
+    }
+
+    private void EventScroll() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             scrollView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
                 @Override
@@ -222,26 +246,6 @@ public class HomeFragment extends Fragment {
                 }
             });
         }
-        danhMucAdapter = new DanhMucAdapter(danhMucs, getContext());
-        GridLayoutManager linearLayoutManager = new GridLayoutManager(getContext(),1,RecyclerView.HORIZONTAL,false);
-        recyclerView.setAdapter(danhMucAdapter);
-        recyclerView.setLayoutManager(linearLayoutManager);
-
-        sanPhamAdapter=new SanPhamAdapter(sanPhams,getContext());
-        linearLayoutManager = new GridLayoutManager(getContext(),2,RecyclerView.VERTICAL,false);
-        recyclerViewSP.setAdapter(sanPhamAdapter);
-        recyclerViewSP.setLayoutManager(linearLayoutManager);
-
-
-        dmspAdapter = new DMSPAdapter(dmsps, getContext());
-        linearLayoutManager = new GridLayoutManager(getContext(),2,RecyclerView.HORIZONTAL,false);
-        recyclerViewDMSP.setAdapter(dmspAdapter);
-        recyclerViewDMSP.setLayoutManager(linearLayoutManager);
-
-
-
-        autoSildeImages();
-        super.onViewCreated(view, savedInstanceState);
     }
 
 

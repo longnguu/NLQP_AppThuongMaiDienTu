@@ -62,7 +62,7 @@ public class SanPhamAdapter extends RecyclerView.Adapter<SanPhamAdapter.ViewHold
                 intent.putExtra("UID",sanPham.getUID());
                 intent.putExtra("maSP",sanPham.getMaSP());
                 intent.putExtra("slcSP",sanPham.getSoluongban());
-                intent.putExtra("daBanSP",sanPham.getDaBan());
+                intent.putExtra("daBan",sanPham.getDaBan());
                 System.out.println("UID : "+ sanPham.getUID());
 
                 context.startActivity(intent);

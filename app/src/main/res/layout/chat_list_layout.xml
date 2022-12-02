@@ -8,23 +8,27 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <LinearLayout
-            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
             android:id="@+id/chatMyLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:gravity="right"
             android:layout_marginEnd="20dp">
+
             <TextView
                 android:id="@+id/chatMyMsgTxt"
-                android:paddingTop="20dp"
-                android:paddingBottom="20dp"
-                android:paddingEnd="10dp"
-                android:paddingStart="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
+                android:background="@drawable/my_msg_back"
+                android:paddingStart="10dp"
+                android:paddingTop="20dp"
+                android:paddingEnd="10dp"
+                android:gravity="right"
+                android:paddingBottom="20dp"
                 android:text="This is opponent messenger"
-                android:background="@drawable/my_msg_back"/>
+                android:textColor="@color/black" />
+
             <TextView
                 android:id="@+id/chatMyTimeTxt"
                 android:layout_width="wrap_content"

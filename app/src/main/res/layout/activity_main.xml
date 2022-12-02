@@ -74,13 +74,20 @@
                 android:src="@drawable/icon_cart" />
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
-    <androidx.recyclerview.widget.RecyclerView
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/topnav"
-        android:layout_above="@+id/navnav"
-        android:id="@+id/recycleViewMainSearch"
-        android:visibility="gone"/>
+        android:id="@+id/cardrecycler"
+        android:visibility="gone"
+        android:layout_above="@+id/navnav">
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/topnav"
+            android:layout_above="@+id/navnav"
+            android:id="@+id/recycleViewMainSearch" />
+    </androidx.cardview.widget.CardView>
 
     <androidx.viewpager.widget.ViewPager
         android:layout_marginTop="5dp"

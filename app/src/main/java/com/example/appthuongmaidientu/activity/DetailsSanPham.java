@@ -43,6 +43,10 @@ public class DetailsSanPham extends AppCompatActivity {
     SanPhamAdapter sanPhamAdapter;
     RecyclerView recyclerView;
     TextView ssp;
+    String imgUS;
+    String nameShop,imgShopp,mobileShop;
+    boolean ktra=true,kt=false;
+    String chatKey="0";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,22 +56,6 @@ public class DetailsSanPham extends AppCompatActivity {
             this.getWindow().getDecorView().getWindowInsetsController().setSystemBarsAppearance(APPEARANCE_LIGHT_STATUS_BARS, APPEARANCE_LIGHT_STATUS_BARS);
         }
         AnhXa();
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setCancelable(false);
-        progressDialog.setMessage("Loading...");
-        ssp = (TextView) findViewById(R.id.soSPDetail);
-        mobile = getIntent().getStringExtra("mobile");
-        email = getIntent().getStringExtra("email");
-        name = getIntent().getStringExtra("name");
-        namesp = getIntent().getStringExtra("namesp");
-        motasp = getIntent().getStringExtra("motasp");
-        giasp = getIntent().getStringExtra("giasp");
-        img = getIntent().getStringExtra("imgsp");
-        uid = getIntent().getStringExtra("UID");
-        maSP=getIntent().getStringExtra("maSP");
-        slcSP=getIntent().getStringExtra("slcSP");
-        daBan=getIntent().getStringExtra("daBan");
-        System.out.println("uid : "+uid);
         progressDialog.show();
 
         databaseReference.addValueEventListener(new ValueEventListener() {
@@ -75,11 +63,17 @@ public class DetailsSanPham extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 ssp.setText("Tổng sản phẩm: "+snapshot.child("SanPham").child(uid).getChildrenCount());
                 for (DataSnapshot dataSnapshot:snapshot.getChildren()){
+                    nameShop=dataSnapshot.child(uid).child("tenUser").getValue(String.class);
+                    imgShopp =dataSnapshot.child(uid).child("imgUS").getValue(String.class);
+                    mobileShop =dataSnapshot.child(uid).child("sdt").getValue(String.class);
+                    dataSnapshot.child(uid).child("imgUS").getValue(String.class);
                     tenShop.setText(dataSnapshot.child(uid).child("tenUser").getValue(String.class));
+                    imgUS=dataSnapshot.child(uid).child("imgUS").getValue(String.class);
                     Picasso.get().load(dataSnapshot.child(uid).child("imgUS").getValue(String.class)).into(imgShop);
                     progressDialog.dismiss();
                 }
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 progressDialog.dismiss();
@@ -107,6 +101,49 @@ public class DetailsSanPham extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
+            }
+        });
+
+        btnchat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                databaseReference.child("chat").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        kt=true;
+                        chatKey= String.valueOf(snapshot.getChildrenCount()+1);
+                        for (DataSnapshot dataSnapshot:snapshot.getChildren()){
+                            if((dataSnapshot.child("user_1").getValue(String.class).equals(mobile)  &&  dataSnapshot.child("user_2").getValue(String.class).equals(uid))
+                                    || (dataSnapshot.child("user_1").getValue(String.class).equals(uid)     &&  dataSnapshot.child("user_2").getValue(String.class).equals(mobile))){
+                                chatKey=dataSnapshot.getKey();
+                                kt=false;
+                            }
+                        }
+                        System.out.println(chatKey);
+                        if (!kt){
+                            Intent intent = new Intent(DetailsSanPham.this,ChatActivity.class);
+                            intent.putExtra("name",nameShop);
+                            intent.putExtra("profilePic",imgUS);
+                            intent.putExtra("chatKey",chatKey);
+                            intent.putExtra("mobile",mobileShop);
+                            startActivity(intent);
+                        }else{
+                            databaseReference.child("chat").child(chatKey).child("user_1").setValue(mobile);
+                            databaseReference.child("chat").child(chatKey).child("user_2").setValue(uid);
+                            Intent intent = new Intent(DetailsSanPham.this,ChatActivity.class);
+                            intent.putExtra("name",nameShop);
+                            intent.putExtra("profilePic",imgUS);
+                            intent.putExtra("chatKey",chatKey);
+                            intent.putExtra("mobile",mobileShop);
+                            startActivity(intent);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
             }
         });
 
@@ -159,5 +196,21 @@ public class DetailsSanPham extends AppCompatActivity {
         tenShop=findViewById(R.id.namePRShop);
         imgShop=findViewById(R.id.imgShopDetai);
         recyclerView=findViewById(R.id.recyclerSPDetail);
+
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setCancelable(false);
+        progressDialog.setMessage("Loading...");
+        ssp = (TextView) findViewById(R.id.soSPDetail);
+        mobile = getIntent().getStringExtra("mobile");
+        email = getIntent().getStringExtra("email");
+        name = getIntent().getStringExtra("name");
+        namesp = getIntent().getStringExtra("namesp");
+        motasp = getIntent().getStringExtra("motasp");
+        giasp = getIntent().getStringExtra("giasp");
+        img = getIntent().getStringExtra("imgsp");
+        uid = getIntent().getStringExtra("UID");
+        maSP=getIntent().getStringExtra("maSP");
+        slcSP=getIntent().getStringExtra("slcSP");
+        daBan=getIntent().getStringExtra("daBan");
     }
 }

@@ -126,7 +126,7 @@ public class ThemSanPhamActivity extends AppCompatActivity {
                                                 imageUrl = "https://firebasestorage.googleapis.com/v0/b/demotmdt-26982.appspot.com/o/error-image-generic.png?alt=media&token=dbfe9456-ba97-458f-8abf-dfd6e644dd25";
                                             }
                                             SanPham sanPham = new SanPham(tenSP.getText().toString(), soLuong.getText().toString(), gia.getText().toString(), moTa.getText().toString(), imageUrl, loaiSP.getSelectedItem().toString().split("")[0]);
-                                            final String currentTimeStamp = String.valueOf(System.currentTimeMillis()).substring(0, 10);
+                                            final String currentTimeStamp = String.valueOf(System.currentTimeMillis());
                                             sanPham.setMaSP(currentTimeStamp);
                                             sanPham.setDaBan("0");
                                             databaseReference.child("SanPham").child(mobile).child(currentTimeStamp).setValue(sanPham);
