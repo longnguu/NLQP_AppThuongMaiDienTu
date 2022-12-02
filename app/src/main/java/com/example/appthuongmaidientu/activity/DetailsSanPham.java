@@ -57,7 +57,6 @@ public class DetailsSanPham extends AppCompatActivity {
         progressDialog.setMessage("Loading...");
         ssp = (TextView) findViewById(R.id.soSPDetail);
         mobile = getIntent().getStringExtra("mobile");
-        mobile="+84869622389";
         email = getIntent().getStringExtra("email");
         name = getIntent().getStringExtra("name");
         namesp = getIntent().getStringExtra("namesp");
@@ -78,7 +77,6 @@ public class DetailsSanPham extends AppCompatActivity {
                     progressDialog.dismiss();
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 progressDialog.dismiss();

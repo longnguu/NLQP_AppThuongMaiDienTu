@@ -1,19 +1,29 @@
 package com.example.appthuongmaidientu.UIFragment;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ImageView;
+import android.widget.ScrollView;
+import android.widget.SearchView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
 import com.example.appthuongmaidientu.R;
 
+import com.example.appthuongmaidientu.activity.LoginActivity;
+import com.example.appthuongmaidientu.activity.QuanLySanPhamActivity;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.squareup.picasso.Picasso;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -24,7 +34,10 @@ public class ProfileFragment extends Fragment {
 
     DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
     TextView prThongTin,prQLSP,prLSDH,nameProfile,Logout;
-    ImageView imgProfile;
+    ImageView imgProfile,imgBackground;
+    CardView topCV;
+    SearchView topSV;
+    ScrollView scrollView;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -57,57 +70,76 @@ public class ProfileFragment extends Fragment {
         return fragment;
     }
 
-    //@Override
-//    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-//        super.onViewCreated(view, savedInstanceState);
-//        AnhXa(view);
-//        Picasso.get().load(getActivity().getIntent().getStringExtra("imgUS")).into(imgProfile);
-//        nameProfile.setText(getActivity().getIntent().getStringExtra("name"));
-//        prThongTin.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(getActivity(), ThongTinCaNhan.class);
-//                intent.putExtra("email",getActivity().getIntent().getStringExtra("email"));
-//                intent.putExtra("mobile",getActivity().getIntent().getStringExtra("mobile"));
-//                intent.putExtra("name",getActivity().getIntent().getStringExtra("name"));
-//                startActivity(intent);
-//            }
-//        });
-//        prQLSP.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(getActivity(), QuanLySanPham.class);
-//                intent.putExtra("email",getActivity().getIntent().getStringExtra("email"));
-//                intent.putExtra("mobile",getActivity().getIntent().getStringExtra("mobile"));
-//                intent.putExtra("name",getActivity().getIntent().getStringExtra("name"));
-//                startActivity(intent);
-//            }
-//        });
-//        prLSDH.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(getActivity(), LichSuDonHang.class);
-//                intent.putExtra("email",getActivity().getIntent().getStringExtra("email"));
-//                intent.putExtra("mobile",getActivity().getIntent().getStringExtra("mobile"));
-//                intent.putExtra("name",getActivity().getIntent().getStringExtra("name"));
-//                startActivity(intent);
-//            }
-//        });
-//        Logout.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                startActivity(new Intent(getActivity(), LoginActivity.class));
-//            }
-//        });
-//    }
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        AnhXa(view);
+        Picasso.get().load(getActivity().getIntent().getStringExtra("imgUS")).into(imgProfile);
+        nameProfile.setText(getActivity().getIntent().getStringExtra("name"));
+        //Picasso.get().load(getActivity().getIntent().getStringExtra("anhnen")).into(imgBackground);
+        prQLSP.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), QuanLySanPhamActivity.class);
+                intent.putExtra("email",getActivity().getIntent().getStringExtra("email"));
+                intent.putExtra("mobile",getActivity().getIntent().getStringExtra("mobile"));
+                intent.putExtra("name",getActivity().getIntent().getStringExtra("name"));
+                startActivity(intent);
+            }
+        });
+        Logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }
+        });
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            scrollView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+                @Override
+                public void onScrollChange(View view, int i, int i1, int i2, int i3) {
+                    int color = R.color.white10;
+                    if (i1<20)
+                        color=R.color.pri10;
+                    else if(i1<40)
+                        color=R.color.pri20;
+                    else if(i1<60)
+                        color=R.color.pri30;
+                    else if(i1<80)
+                        color=R.color.pri40;
+                    else if (i1<100)
+                        color=R.color.pri50;
+                    else if (i1<120)
+                        color=R.color.pri60;
+                    else if (i1<140)
+                        color=R.color.pri70;
+                    else if(i1<160)
+                        color=R.color.pri80;
+                    else if (i1<180)
+                        color=R.color.pri90;
+                    else
+                        color=R.color.pri100;
+                    Window window = getActivity().getWindow();
+                    window.setStatusBarColor(getActivity().getResources().getColor(color));
+                    topCV.setCardBackgroundColor(getActivity().getResources().getColor(color));
+                    //topSV.setBackgroundColor(getActivity().getResources().getColor(color));
+                }
+            });
+        }
+    }
 
     private void AnhXa(View view) {
         prThongTin = (TextView)  view.findViewById(R.id.prThongtin);
         prQLSP=(TextView) view.findViewById(R.id.prQLSP);
         prLSDH=(TextView) view.findViewById(R.id.prLSDH);
-        nameProfile = (TextView) view.findViewById(R.id.nameProfile);
+        nameProfile = (TextView) view.findViewById(R.id.profile_fullname);
         imgProfile=(ImageView) view.findViewById(R.id.imgProfile);
         Logout =(TextView) view.findViewById(R.id.logOut);
+        topCV = getActivity().findViewById(R.id.topnav);
+        topSV = getActivity().findViewById(R.id.topSearchView);
+        scrollView = view.findViewById(R.id.scrollViewProfile);
+        // imgBackground=view.findViewById(R.id.imgBackgroundFrProfile);
     }
 
 

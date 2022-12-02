@@ -27,6 +27,13 @@
                 android:value="" />
         </activity>
         <activity
+            android:name=".activity.QuanLySanPhamActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".activity.EditUserActivity"
             android:exported="false">
             <meta-data
@@ -42,6 +49,13 @@
         </activity>
         <activity
             android:name=".activity.MessengerActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".activity.ThemSanPhamActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

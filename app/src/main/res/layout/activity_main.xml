@@ -7,16 +7,16 @@
     android:fitsSystemWindows="false"
     tools:context=".activity.MainActivity">
     <androidx.cardview.widget.CardView
-        android:layout_marginTop="30dp"
+        android:paddingTop="30dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/topnav"
         app:cardBackgroundColor="@android:color/transparent">
         <RelativeLayout
-
+            android:layout_marginTop="30dp"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:background="@color/yellow_pri">
+            android:background="@android:color/transparent">
             <SearchView
                 android:id="@+id/topSearchView"
                 android:layout_width="match_parent"
@@ -43,6 +43,7 @@
                     android:src="@drawable/icon_messenger" />
                 <androidx.cardview.widget.CardView
                     android:id="@+id/unseenMain"
+                    android:visibility="gone"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     app:cardCornerRadius="20dp"
@@ -82,11 +83,13 @@
         android:visibility="gone"/>
 
     <androidx.viewpager.widget.ViewPager
+        android:layout_marginTop="5dp"
         android:id="@+id/viewpg"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/navnav"
-        tools:ignore="SpeakableTextPresentCheck"></androidx.viewpager.widget.ViewPager>
+        tools:ignore="SpeakableTextPresentCheck">
+    </androidx.viewpager.widget.ViewPager>
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/navnav"
         android:layout_width="match_parent"

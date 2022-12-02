@@ -54,7 +54,6 @@ public class MainActivity extends AppCompatActivity {
         searchView = (SearchView) findViewById(R.id.topSearchView);
         recyclerViewSearch = (RecyclerView) findViewById(R.id.recycleViewMainSearch);
 
-
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
@@ -68,16 +67,17 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-//        iconMess.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(MainActivity.this, UIMessenger.class);
-//                intent.putExtra("email", getIntent().getStringExtra("email"));
-//                intent.putExtra("mobile", getIntent().getStringExtra("mobile"));
-//                intent.putExtra("name", getIntent().getStringExtra("name"));
-//                startActivity(intent);
-//            }
-//        });
+        iconMess.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, MessengerActivity.class);
+                System.out.println(getIntent().getStringExtra("email"));
+                intent.putExtra("email", getIntent().getStringExtra("email"));
+                intent.putExtra("mobile", getIntent().getStringExtra("mobile"));
+                intent.putExtra("name", getIntent().getStringExtra("name"));
+                startActivity(intent);
+            }
+        });
 
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -142,43 +142,7 @@ public class MainActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         String email = intent.getStringExtra("email");
-        System.out.println("asjkfasjkd "+getIntent().getStringExtra("mobile"));
-
         myRef = FirebaseDatabase.getInstance().getReference();
 
     }
-//
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.searchmenu, menu);
-//        MenuItem item = menu.findItem(R.id.search);
-//        SearchView searchView = (SearchView) item.getActionView();
-//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-//            @Override
-//            public boolean onQueryTextSubmit(String s) {
-//                return false;
-//            }
-//
-//            @Override
-//            public boolean onQueryTextChange(String s) {
-//                return false;
-//            }
-//        });
-//        return super.onCreateOptionsMenu(menu);
-//    }
-//
-//    public static void updateUnSeen(List<MessengerList> messengerLists) {
-//        int i = 0;
-//        for (MessengerList messengerList : messengerLists) {
-//            if (messengerList.getUnseenMessenger() > 0) {
-//                i++;
-//            }
-//        }
-//        if (i > 0) {
-//            unSeenMain.setVisibility(View.VISIBLE);
-//            textUnSeenMain.setText(String.valueOf(i));
-//        } else {
-//            unSeenMain.setVisibility(View.GONE);
-//        }
-//    }
 }
