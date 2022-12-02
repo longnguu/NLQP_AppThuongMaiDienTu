@@ -22,10 +22,12 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
+import com.example.appthuongmaidientu.Adapter.DMSPAdapter;
 import com.example.appthuongmaidientu.Adapter.DanhMucAdapter;
 import com.example.appthuongmaidientu.Adapter.PhotoAdapter;
 import com.example.appthuongmaidientu.Adapter.SanPhamAdapter;
 import com.example.appthuongmaidientu.R;
+import com.example.appthuongmaidientu.model.DMSP;
 import com.example.appthuongmaidientu.model.DanhMuc;
 import com.example.appthuongmaidientu.model.Photo;
 import com.example.appthuongmaidientu.model.SanPham;
@@ -52,11 +54,13 @@ public class HomeFragment extends Fragment {
     CircleIndicator circleIndicator,circleIndicator1;
     PhotoAdapter photoAdapter;
     List<Photo> mListPhoto;
+    DMSPAdapter dmspAdapter;
     Timer mTimer;
-    RecyclerView recyclerView,recyclerViewSP;
+    RecyclerView recyclerView,recyclerViewSP, recyclerViewDMSP;
     DanhMucAdapter danhMucAdapter;
     ArrayList<DanhMuc> danhMucs;
     ArrayList<SanPham> sanPhams;
+    ArrayList<DMSP> dmsps;
     SanPhamAdapter sanPhamAdapter;
     GestureDetector gestureDetector;
     ScrollView scrollView;
@@ -117,27 +121,50 @@ public class HomeFragment extends Fragment {
         circleIndicator.setViewPager(viewPager);
         recyclerView = view.findViewById(R.id.list_danhmuc);
         recyclerViewSP=view.findViewById(R.id.list_sanpham);
+        recyclerViewDMSP=view.findViewById(R.id.list_danhmucsanpham);
         scrollView = view.findViewById(R.id.scrollHomeFg);
         topCV = getActivity().findViewById(R.id.topnav);
         topSV = getActivity().findViewById(R.id.topSearchView);
         recyclerView.setHorizontalScrollBarEnabled(true);
+
+
         danhMucs = new ArrayList<DanhMuc>();
-        //Tự phát sinh 50 dữ liệu mẫu
-            danhMucs.add(new DanhMuc("Khung giờ săn sale" , "",R.drawable.ic_baseline_favorite_24));
-            danhMucs.add(new DanhMuc("Gì cũng rẻ" , "",R.drawable.ic_baseline_favorite_24));
-            danhMucs.add(new DanhMuc("Mã giảm giá" , "",R.drawable.ic_baseline_favorite_24));
-            danhMucs.add(new DanhMuc("Freeship" , "",R.drawable.ic_baseline_favorite_24));
-            danhMucs.add(new DanhMuc("Săn xu mỗi ngày" , "",R.drawable.ic_baseline_favorite_24));
-            danhMucs.add(new DanhMuc("Săn thưởng" , "",R.drawable.ic_baseline_favorite_24));
-            danhMucs.add(new DanhMuc("Hoàn xu" , "",R.drawable.ic_baseline_favorite_24));
-            danhMucs.add(new DanhMuc("Thương hiệu tốt giá tốt" , "",R.drawable.ic_baseline_favorite_24));
-            danhMucs.add(new DanhMuc("Hàng quốc tế" , "",R.drawable.ic_baseline_favorite_24));
-            danhMucs.add(new DanhMuc("Nạp thẻ" , "",R.drawable.ic_baseline_favorite_24));
-            danhMucs.add(new DanhMuc("Dịch vụ" , "",R.drawable.ic_baseline_favorite_24));
-            danhMucs.add(new DanhMuc("Ưu đãi thành viên" , "",R.drawable.ic_baseline_favorite_24));
-            danhMucs.add(new DanhMuc("Ưu đãi đối tác" , "",R.drawable.ic_baseline_favorite_24));
-            danhMucs.add(new DanhMuc("Chơi là trúng" , "",R.drawable.ic_baseline_favorite_24));
-            sanPhams=new ArrayList<>();
+        databaseReference.child("DanhMuc").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                danhMucs.clear();
+                for (DataSnapshot dataSnapshot:snapshot.getChildren()){
+                    danhMucs.add(new DanhMuc(dataSnapshot.child("tenDM").getValue(String.class),dataSnapshot.child("hinhanhDM").getValue(String.class),dataSnapshot.child("idDM").getValue(String.class)));
+                }
+                danhMucAdapter.updateDanhMuc(danhMucs);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        dmsps = new ArrayList<DMSP>();
+        databaseReference.child("DanhMucSanPham").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                dmsps.clear();
+                for (DataSnapshot dataSnapshot:snapshot.getChildren()){
+                    dmsps.add(new DMSP(dataSnapshot.child("ten").getValue(String.class),dataSnapshot.child("hinhanh").getValue(String.class),dataSnapshot.child("id").getValue(String.class)));
+                    System.out.println(dataSnapshot.child("hinhanh").getValue(String.class));
+                }
+                dmspAdapter.updateDanhMuc(dmsps);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
+        sanPhams=new ArrayList<>();
         databaseReference.child("SanPham").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -196,9 +223,7 @@ public class HomeFragment extends Fragment {
             });
         }
         danhMucAdapter = new DanhMucAdapter(danhMucs, getContext());
-
-        GridLayoutManager linearLayoutManager = new GridLayoutManager(getContext(),2,RecyclerView.HORIZONTAL,false);
-
+        GridLayoutManager linearLayoutManager = new GridLayoutManager(getContext(),1,RecyclerView.HORIZONTAL,false);
         recyclerView.setAdapter(danhMucAdapter);
         recyclerView.setLayoutManager(linearLayoutManager);
 
@@ -206,6 +231,13 @@ public class HomeFragment extends Fragment {
         linearLayoutManager = new GridLayoutManager(getContext(),2,RecyclerView.VERTICAL,false);
         recyclerViewSP.setAdapter(sanPhamAdapter);
         recyclerViewSP.setLayoutManager(linearLayoutManager);
+
+
+        dmspAdapter = new DMSPAdapter(dmsps, getContext());
+         linearLayoutManager = new GridLayoutManager(getContext(),2,RecyclerView.HORIZONTAL,false);
+        recyclerViewDMSP.setAdapter(dmspAdapter);
+        recyclerViewDMSP.setLayoutManager(linearLayoutManager);
+
 
 
         autoSildeImages();

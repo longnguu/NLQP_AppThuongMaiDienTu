@@ -12,18 +12,19 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.appthuongmaidientu.R;
+import com.example.appthuongmaidientu.model.DMSP;
 import com.example.appthuongmaidientu.model.DanhMuc;
 import com.example.appthuongmaidientu.model.SanPham;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class DanhMucAdapter extends RecyclerView.Adapter<DanhMucAdapter.ViewHolder> {
-    List<DanhMuc> danhMucList;
+public class DMSPAdapter extends RecyclerView.Adapter<DMSPAdapter.ViewHolder> {
+    List<DMSP> danhMucList;
     private Context mContext;
     ImageView img_cate;
 
-    public DanhMucAdapter(List<DanhMuc> danhMucList, Context mContext) {
+    public DMSPAdapter(List<DMSP> danhMucList, Context mContext) {
         this.danhMucList = danhMucList;
         this.mContext = mContext;
     }
@@ -32,16 +33,16 @@ public class DanhMucAdapter extends RecyclerView.Adapter<DanhMucAdapter.ViewHold
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView;
-        itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.danhmucitemlayout, parent, false);
+        itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.dmsp_item, parent, false);
         return new ViewHolder(itemView);
     }
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        DanhMuc computer =danhMucList.get(position);
+        DMSP computer =danhMucList.get(position);
         holder.tenDanhMuc.setText(computer.getName());
         Picasso.get().load(computer.getHinhanh()).into(img_cate);
     }
-    public void updateDanhMuc(List<DanhMuc> danhMucs){
+    public void updateDanhMuc(List<DMSP> danhMucs){
         this.danhMucList=danhMucs;
         notifyDataSetChanged();
     }
@@ -59,8 +60,8 @@ public class DanhMucAdapter extends RecyclerView.Adapter<DanhMucAdapter.ViewHold
         public ViewHolder(View itemView) {
             super(itemView);
             itemview = itemView;
-            tenDanhMuc = itemView.findViewById(R.id.studentname);
-            img_cate=itemView.findViewById(R.id.DMItemIMG);
+            tenDanhMuc = itemView.findViewById(R.id.name_cate);
+            img_cate = itemView.findViewById(R.id.img_cate);
 
             //Xử lý khi nút Chi tiết được bấm
         }
