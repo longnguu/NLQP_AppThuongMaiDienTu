@@ -8,17 +8,20 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.appthuongmaidientu.Adapter.SanPhamAdapter;
 import com.example.appthuongmaidientu.R;
+import com.example.appthuongmaidientu.model.CartList;
 import com.example.appthuongmaidientu.model.SanPham;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -26,6 +29,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
+
+import org.checkerframework.checker.units.qual.C;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +50,8 @@ public class DetailsSanPham extends AppCompatActivity {
     TextView ssp;
     String imgUS;
     String nameShop,imgShopp,mobileShop;
+    TextView editText;
+    CardView plus,remove;
     boolean ktra=true,kt=false;
     String chatKey="0";
 
@@ -57,6 +64,34 @@ public class DetailsSanPham extends AppCompatActivity {
         }
         AnhXa();
         progressDialog.show();
+
+        editText.setText("1/"+slcSP);
+        plus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int slg = Integer.parseInt(editText.getText().toString().split("/")[0]);
+                if (slg<= Integer.parseInt(editText.getText().toString().split("/")[1]))
+                    slg++;
+                editText.setText(slg+"/"+slcSP);
+            }
+        });
+        remove.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int slg = Integer.parseInt(editText.getText().toString().split("/")[0]);
+                if (slg>1)
+                    slg--;
+                editText.setText(slg+"/"+slcSP);
+            }
+        });
+        bthaddcart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int slg = Integer.parseInt(editText.getText().toString().split("/")[0]);
+                CartList cartList = new CartList(maSP,namesp,String.valueOf(slg),"0",giasp,uid,img);
+                databaseReference.child("GioHang").child(mobile).child(maSP).setValue(cartList);
+            }
+        });
 
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -92,7 +127,8 @@ public class DetailsSanPham extends AppCompatActivity {
                     sanPham.setUID(getIntent().getStringExtra("mobile"));
                     sanPham.setMota(dataSnapshot.child("mota").getValue(String.class));
                     sanPham.setGia(dataSnapshot.child("gia").getValue(String.class));
-                    sanPham.setDaBan("0");
+                    sanPham.setDaBan(dataSnapshot.child("daBan").getValue(String.class));
+                    sanPham.setSoluongban(dataSnapshot.child("soluongban").getValue(String.class));
                     sanPhams.add(sanPham);
                     sanPhamAdapter.updateSanPham(sanPhams);
                 }
@@ -196,6 +232,9 @@ public class DetailsSanPham extends AppCompatActivity {
         tenShop=findViewById(R.id.namePRShop);
         imgShop=findViewById(R.id.imgShopDetai);
         recyclerView=findViewById(R.id.recyclerSPDetail);
+        editText= findViewById(R.id.edtSlgCart);
+        plus=findViewById(R.id.btn_plusedtsl);
+        remove=findViewById(R.id.btn_removeedtsl);
 
         progressDialog = new ProgressDialog(this);
         progressDialog.setCancelable(false);

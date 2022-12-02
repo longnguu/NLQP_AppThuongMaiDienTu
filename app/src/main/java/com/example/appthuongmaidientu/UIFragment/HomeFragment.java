@@ -220,22 +220,24 @@ public class HomeFragment extends Fragment {
                 public void onScrollChange(View view, int i, int i1, int i2, int i3) {
                     int color = R.color.white10;
                     if (i1<20)
-                        color=R.color.pri10;
+                        color=R.color.pri00;
                     else if(i1<40)
-                        color=R.color.pri20;
+                        color=R.color.pri10;
                     else if(i1<60)
-                        color=R.color.pri30;
+                        color=R.color.pri20;
                     else if(i1<80)
-                        color=R.color.pri40;
+                        color=R.color.pri30;
                     else if (i1<100)
-                        color=R.color.pri50;
+                        color=R.color.pri40;
                     else if (i1<120)
-                        color=R.color.pri60;
+                        color=R.color.pri50;
                     else if (i1<140)
-                        color=R.color.pri70;
+                        color=R.color.pri60;
                     else if(i1<160)
-                        color=R.color.pri80;
+                        color=R.color.pri70;
                     else if (i1<180)
+                        color=R.color.pri80;
+                    else if (i1<200)
                         color=R.color.pri90;
                     else
                         color=R.color.pri100;

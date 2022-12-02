@@ -20,6 +20,7 @@
     <color name="white90">#E6FFFFFF</color>
     <color name="white100">#FFFFFF</color>
 
+    <color name="pri00">#00FFFFFF</color>
     <color name="pri10">#1Afece2f</color>
     <color name="pri20">#33fece2f</color>
     <color name="pri30">#4Dfece2f</color>

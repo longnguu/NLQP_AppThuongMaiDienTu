@@ -14,13 +14,16 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.TextView;
 
+import com.example.appthuongmaidientu.Adapter.CartAdapter;
 import com.example.appthuongmaidientu.Adapter.SanPhamAdapter;
 import com.example.appthuongmaidientu.Adapter.ViewPageAdapter;
 import com.example.appthuongmaidientu.R;
+import com.example.appthuongmaidientu.model.CartList;
 import com.example.appthuongmaidientu.model.MessengerList;
 import com.example.appthuongmaidientu.model.SanPham;
 import com.example.appthuongmaidientu.model.User;
@@ -30,6 +33,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import org.checkerframework.checker.units.qual.C;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,10 +47,14 @@ public class MainActivity extends AppCompatActivity {
     ImageView iconMess, iconCart;
     SearchView searchView;
     RecyclerView recyclerViewSearch;
-    CardView cardViewRecy;
+    CardView cardViewRecy,topCV;
     public static CardView unSeenMain;
     public static TextView textUnSeenMain;
+    public static CardView slgCart;
+    public static TextView textSlgCart;
     ArrayList<SanPham> sanPhams = new ArrayList<>();
+    public static List<CartList> cartLists = new ArrayList<>();
+    CartAdapter cartAdapter;
     SanPhamAdapter sanPhamAdapter;
     DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
 
@@ -56,9 +65,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-
+        topCV = findViewById(R.id.topnav);
         unSeenMain = (CardView) findViewById(R.id.unseenMain);
         textUnSeenMain = (TextView) findViewById(R.id.textUnseenMain);
+        slgCart = findViewById(R.id.slCartMain);
+        textSlgCart = findViewById(R.id.textSLCart);
         viewPager = (ViewPager) findViewById(R.id.viewpg);
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.navnav);
         iconMess = (ImageView) findViewById(R.id.topnavMess);
@@ -100,6 +111,47 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        iconCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this,CartActivity.class);
+                intent.putExtra("mobile",getIntent().getStringExtra("mobile"));
+                startActivity(intent);
+            }
+        });
+
+        databaseReference.child("GioHang").child(getIntent().getStringExtra("mobile")).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                cartLists.clear();
+                int i=0;
+                for (DataSnapshot dataSnapshot:snapshot.getChildren()){
+                    String tenSP=dataSnapshot.child("tenSP").getValue(String.class);
+                    String gia=dataSnapshot.child("gia").getValue(String.class);
+                    String check=dataSnapshot.child("check").getValue(String.class);
+                    String name=dataSnapshot.child("name").getValue(String.class);
+                    String maSP=dataSnapshot.child("maSP").getValue(String.class);
+                    String uid=dataSnapshot.child("uid").getValue(String.class);
+                    String soLuongMua=dataSnapshot.child("soLuongMua").getValue(String.class);
+                    String hinhanh=dataSnapshot.child("soLuongMua").getValue(String.class);
+                    CartList cartList = new CartList(maSP,tenSP,soLuongMua,check,gia,uid,hinhanh);
+                    cartLists.add(cartList);
+                    i++;
+                }
+                if (i > 0) {
+                    slgCart.setVisibility(View.VISIBLE);
+                    textSlgCart.setText(String.valueOf(i));
+                } else {
+                    slgCart.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
 
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -125,6 +177,9 @@ public class MainActivity extends AppCompatActivity {
                         viewPager.setCurrentItem(0);
                         break;
                 }
+                Window window = MainActivity.this.getWindow();
+                window.setStatusBarColor(MainActivity.this.getResources().getColor(R.color.pri00));
+                topCV.setCardBackgroundColor(MainActivity.this.getResources().getColor(R.color.pri00));
                 return true;
             }
         });
@@ -153,6 +208,9 @@ public class MainActivity extends AppCompatActivity {
                         bottomNavigationView.getMenu().findItem(R.id.navprofile).setChecked(true);
                         break;
                 }
+                Window window = MainActivity.this.getWindow();
+                window.setStatusBarColor(MainActivity.this.getResources().getColor(R.color.pri00));
+                topCV.setCardBackgroundColor(MainActivity.this.getResources().getColor(R.color.pri00));
 
             }
 
@@ -184,7 +242,7 @@ public class MainActivity extends AppCompatActivity {
                             sanPham.setUID(dataSnapshot.getKey());
                             sanPham.setMota(dataSnapshot1.child("mota").getValue(String.class));
                             sanPham.setGia(dataSnapshot1.child("gia").getValue(String.class));
-                            sanPham.setDaBan("0");
+                            sanPham.setDaBan(dataSnapshot1.child("daBan").getValue(String.class));
                             sanPhams.add(sanPham);
                         }
                     }

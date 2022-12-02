@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.appthuongmaidientu.R;
+import com.example.appthuongmaidientu.control.MemoryData;
 import com.example.appthuongmaidientu.model.User;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -70,7 +71,6 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
-
                 startActivity(intent);
             }
         });
@@ -119,6 +119,7 @@ public class LoginActivity extends AppCompatActivity {
                         intent.putExtra("imgUS",imgUS);
                         intent.putExtra("anhnen",anhnen);
                         intent.putExtra("mobile",mobile);
+                        MemoryData.saveData("+84"+phone.substring(1),LoginActivity.this);
                         System.out.println("abc"+mobile);
                         startActivity(intent);
                         if (checkBox_rememberUP.isChecked()) {
