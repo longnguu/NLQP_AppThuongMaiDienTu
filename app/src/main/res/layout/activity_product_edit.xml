@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.EditUserActivity">
+    tools:context=".activity.ProductEditActivity">
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -27,7 +27,7 @@
                 android:drawableLeft="@drawable/ic_baseline_edit_24"
                 android:fontFamily="@font/bungee"
                 android:onClick="edit_information"
-                android:text="Chỉnh sửa thông tin cá nhân"
+                android:text="Chỉnh sửa thông tin sản phẩm"
                 android:textColor="#000" />
 
             <com.google.android.material.textfield.TextInputLayout
@@ -36,15 +36,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
 
-                android:hint="Số điện thoại">
+                android:hint="Sản phẩm">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edt_phone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/phone_icon"
                     android:drawablePadding="10dp"
-                    android:text="0911649649" />
+                    android:text="Áo" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -53,13 +52,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
-                android:hint="Họ và tên">
+                android:hint="Giá bán">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edt_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/person_icon"
                     android:drawablePadding="10dp"
                     android:text="Võ Phong Nhã" />
 
@@ -70,13 +68,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
-                android:hint="Email">
+                android:hint="Số lượng hiện còn">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edt_email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/mail_icon"
                     android:drawablePadding="10dp"
                     android:text="nhavophong@gmail.com" />
 
@@ -87,19 +84,30 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
-                android:hint="Mật khẩu">
+                android:hint="Mô tả">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edt_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/password_icon"
                     android:drawablePadding="10dp"
-                    android:inputType="textPassword"
-                    android:text="matkhaucu" />
+                    android:text="Mô tả" />
 
             </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:hint="Danh mục">
 
+                <Spinner
+                    android:id="@+id/sp_danhmuc"
+                    android:layout_marginTop="30dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </com.google.android.material.textfield.TextInputLayout>
             <Button
                 android:id="@+id/btn_logout"
                 android:layout_width="match_parent"
