@@ -35,6 +35,8 @@ public class LoginActivity extends AppCompatActivity {
     SharedPreferences sharedPreferences;
     CheckBox checkBox_rememberUP;
     User user;
+    private String phone;
+
     DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
 
 
@@ -46,6 +48,7 @@ public class LoginActivity extends AppCompatActivity {
 
         AnhXa();
         edt_phone.setText(getIntent().getStringExtra("phone"));
+        phone = getIntent().getStringExtra("phone");
         edt_password.setText(getIntent().getStringExtra("password"));
 
         //Hiển thị tài khoản đã lưu
@@ -120,6 +123,11 @@ public class LoginActivity extends AppCompatActivity {
                         }
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         intent.putExtra("phone", phone);
+                        System.out.println(phone);
+                        intent.putExtra("email",snapshot.child("email").getValue(String.class));
+                        intent.putExtra("mobile",snapshot.child("sdt").getValue(String.class));
+                        intent.putExtra("name",snapshot.child("tenUser").getValue(String.class));
+                        intent.putExtra("imgUS",snapshot.child("imgUS").getValue(String.class));
                         startActivity(intent);
                     }else Toast.makeText(getApplicationContext(), "Sai thông tin tài khoản hoặc mật khẩu",
                             Toast.LENGTH_SHORT).show();
@@ -134,5 +142,9 @@ public class LoginActivity extends AppCompatActivity {
     public void callForgetPassword(View view) {
         Intent intent = new Intent(getApplicationContext(), ForgetPasswordActivity.class);
         startActivity(intent);
+    }
+
+    public String getMyData() {
+        return phone;
     }
 }

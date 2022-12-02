@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.appthuongmaidientu.R;
+import com.example.appthuongmaidientu.activity.DetailsSanPham;
 import com.example.appthuongmaidientu.model.SanPham;
 import com.squareup.picasso.Picasso;
 
@@ -44,25 +45,27 @@ public class SanPhamAdapter extends RecyclerView.Adapter<SanPhamAdapter.ViewHold
         holder.slbSP.setText("Đã bán: "+sanPham.getDaBan());
         Picasso.get().load(sanPham.getImg()).into(holder.imgSP);
         System.out.println(sanPham.getImg()+"abc"+sanPham.getTen());
-//        holder.layoutItem.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(context, DetailsSanPham.class);
-//                Activity activity = (Activity) context;
-//                intent.putExtra("mobile",activity.getIntent().getStringExtra("mobile"));
-//                intent.putExtra("email",activity.getIntent().getStringExtra("email"));
-//                intent.putExtra("name",activity.getIntent().getStringExtra("name"));
-//                intent.putExtra("imgUS",activity.getIntent().getStringExtra("imgUS"));
-//                intent.putExtra("namesp",sanPham.getTen());
-//                intent.putExtra("imgsp",sanPham.getImg());
-//                intent.putExtra("giasp",sanPham.getGia());
-//                intent.putExtra("motasp",sanPham.getMota());
-//                intent.putExtra("UID",sanPham.getUID());
-//
-//                context.startActivity(intent);
-//
-//            }
-//        });
+        holder.layoutItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, DetailsSanPham.class);
+                Activity activity = (Activity) context;
+                intent.putExtra("mobile",activity.getIntent().getStringExtra("mobile"));
+                System.out.println("TEST : "+activity.getIntent().getStringExtra("mobile"));
+                intent.putExtra("email",activity.getIntent().getStringExtra("email"));
+                intent.putExtra("name",activity.getIntent().getStringExtra("name"));
+                intent.putExtra("imgUS",activity.getIntent().getStringExtra("imgUS"));
+                intent.putExtra("namesp",sanPham.getTen());
+                intent.putExtra("imgsp",sanPham.getImg());
+                intent.putExtra("giasp",sanPham.getGia());
+                intent.putExtra("motasp",sanPham.getMota());
+                intent.putExtra("UID",sanPham.getUID());
+                System.out.println("UID : "+ sanPham.getUID());
+
+                context.startActivity(intent);
+
+            }
+        });
 
     }
     public void updateSanPham(List<SanPham> sanPhams){

@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
         searchView = (SearchView) findViewById(R.id.topSearchView);
         recyclerViewSearch = (RecyclerView) findViewById(R.id.recycleViewMainSearch);
 
+
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
@@ -141,6 +142,8 @@ public class MainActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         String email = intent.getStringExtra("email");
+        System.out.println("asjkfasjkd "+getIntent().getStringExtra("mobile"));
+
         myRef = FirebaseDatabase.getInstance().getReference();
 
     }
