@@ -29,7 +29,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/bungee"
-                android:text="Chào mừng bạn trở lại!"
+                android:text="Banana Tec"
                 android:textSize="30sp"
                 android:transitionName="logo_Name_Tran"></TextView>
 
@@ -37,8 +37,9 @@
                 android:id="@+id/logoSlogan"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginVertical="10dp"
                 android:fontFamily="@font/roboto"
-                android:text="Đăng nhập để tiếp tục"
+                android:text="Đồ công nghê giá tốt ..."
                 android:textSize="18sp"
                 android:transitionName="logo_Slg_Tran"></TextView>
 
@@ -60,12 +61,16 @@
                         android:layout_height="wrap_content"
                         android:hint="Số điện thoại"
                         android:paddingBottom="5dp"
+                        app:counterEnabled="true"
+                        app:counterMaxLength="10"
                         android:transitionName="username_Tran">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/edt_phone"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="wrap_content"
+                            android:inputType="number"
+                            android:maxLength="10"/>
 
                     </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
@@ -83,7 +88,8 @@
                         android:id="@+id/edt_password"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="textPassword" />
+                        android:inputType="textPassword"
+                        />
 
                 </com.google.android.material.textfield.TextInputLayout>
 

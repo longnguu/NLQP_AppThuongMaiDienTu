@@ -313,7 +313,7 @@ public class HomeFragment extends Fragment {
                 sanPhams.clear();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()){
                     for (DataSnapshot dataSnapshot1:dataSnapshot.getChildren()){
-                        if(Integer.parseInt( dataSnapshot1.child("loai").getValue(String.class))==pos){
+                        if(Integer.parseInt(dataSnapshot1.child("loai").getValue(String.class))==pos){
                                 String ten= dataSnapshot1.child("ten").getValue(String.class);
                                 SanPham sanPham = new SanPham(ten);
                                 sanPham.setImg(dataSnapshot1.child("img").getValue(String.class));

@@ -10,9 +10,14 @@ import android.widget.ListView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.appthuongmaidientu.Adapter.NotifyAdapter;
+import com.example.appthuongmaidientu.Adapter.SanPhamAdapter;
 import com.example.appthuongmaidientu.R;
 import com.example.appthuongmaidientu.model.NotifyList;
+import com.google.common.base.StandardSystemProperty;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -29,9 +34,10 @@ import java.util.List;
  */
 public class NotifiFragment extends Fragment {
 
-    ListView listView;
+    RecyclerView recyclerView;
     List<NotifyList> notifyLists=new ArrayList<>();
     ArrayAdapter<NotifyList> arrayAdapter;
+    NotifyAdapter notifyAdapter;
     DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
 
 
@@ -80,7 +86,11 @@ public class NotifiFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        listView = view.findViewById(R.id.lvNotify);
+        recyclerView = view.findViewById(R.id.lvNotify);
+        notifyAdapter=new NotifyAdapter(notifyLists,getContext());
+        GridLayoutManager linearLayoutManager = new GridLayoutManager(getContext(),1, RecyclerView.VERTICAL,false);
+        recyclerView.setAdapter(notifyAdapter);
+        recyclerView.setLayoutManager(linearLayoutManager);
 
         databaseReference.child("ThongBao").child(getActivity().getIntent().getStringExtra("mobile")).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -90,24 +100,17 @@ public class NotifiFragment extends Fragment {
                     for (DataSnapshot dataSnapshot1:dataSnapshot.getChildren()){
                         if (dataSnapshot1.child("content").getValue(String.class)!=null)
                             notifyLists.add(new NotifyList(dataSnapshot1.child("id").getValue(String.class),dataSnapshot1.child("status").getValue(String.class),dataSnapshot1.child("content").getValue(String.class)));
-                        System.out.println(dataSnapshot1.child("content").getValue(String.class));
                     }
                 }
-                if (!notifyLists.isEmpty()){
-                    arrayAdapter  = new ArrayAdapter<NotifyList>(getContext(), android.R.layout.simple_list_item_1 , notifyLists);
-                    listView.setAdapter(arrayAdapter);
+                notifyAdapter.update(notifyLists);
                 }
 
-            }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
-
-
-
     }
 
     @Override

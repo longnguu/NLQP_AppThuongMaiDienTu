@@ -47,8 +47,8 @@ public class DMSPAdapter extends RecyclerView.Adapter<DMSPAdapter.ViewHolder> {
         holder.layoutdmsp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (i>0)
-                    HomeFragment.update(i);
+                if (Integer.parseInt(computer.getId())>0)
+                    HomeFragment.update(Integer.parseInt(computer.getId()));
                 else HomeFragment.update();
             }
         });

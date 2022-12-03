@@ -45,6 +45,8 @@ public class MessengerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_messenger);
         mobile = getIntent().getStringExtra("mobile");
+        email = getIntent().getStringExtra("email");
+        name = getIntent().getStringExtra("name");
 
         profilePic = (CircleImageView) findViewById(R.id.userProfilePicMessUI);
 
@@ -125,10 +127,10 @@ public class MessengerActivity extends AppCompatActivity {
                                             String getUserTwo = dataSnapshot1.child("user_2").getValue(String.class);
                                             if ((getUserOne.equals(mobile) && getUserTwo.equals(getMobile)) || (getUserOne.equals(getMobile) && getUserTwo.equals(mobile))) {
                                                 for (DataSnapshot chatDataSnapShot : dataSnapshot1.child("messenger").getChildren()) {
-                                                    final long getMessngerKey = Long.parseLong(chatDataSnapShot.getKey());
+                                                    final long getMessngerKey = Long.parseLong(chatDataSnapShot.getKey().substring(0,10));
                                                     long getLastseenMsg = 0;
                                                     if (!MemoryData.getLastMsgTs(MessengerActivity.this, chatKey).isEmpty())
-                                                        getLastseenMsg = Long.parseLong(MemoryData.getLastMsgTs(MessengerActivity.this, chatKey));
+                                                        getLastseenMsg = Long.parseLong(MemoryData.getLastMsgTs(MessengerActivity.this, chatKey).substring(0,10));
 //                                                   // if (chatDataSnapShot.child("mobile").getValue(String.class).equals(MemoryData.getData(UIMessenger.this))){
 //                                                        lastMessenger = "Bạn: "+chatDataSnapShot.child("msg").getValue(String.class);
 //                                                    }else

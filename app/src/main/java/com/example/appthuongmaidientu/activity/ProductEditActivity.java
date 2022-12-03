@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -33,6 +34,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -70,16 +72,16 @@ public class ProductEditActivity extends AppCompatActivity {
 
 
         maSP = getIntent().getStringExtra("maSP");
-        mobile=getIntent().getStringExtra("mobile");
 
         databaseReference.child("DanhMucSanPham").addValueEventListener(new ValueEventListener() {
+            @SuppressLint("SuspiciousIndentation")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 dmmmm.clear();
                 for (DataSnapshot dataSnapshot:snapshot.getChildren()){
                     String asd=dataSnapshot.child("id").getValue(String.class)+" - "+dataSnapshot.child("ten").getValue(String.class);
                     if (Integer.parseInt(dataSnapshot.child("id").getValue(String.class))>0)
-                    dmmmm.add(asd);
+                        dmmmm.add(asd);
                     System.out.println(asd);
                 }
                 adapter.notifyDataSetChanged();
@@ -159,7 +161,7 @@ public class ProductEditActivity extends AppCompatActivity {
                 }else {
                     String imageUrl = getIntent().getStringExtra("imgSP");
                         System.out.println(imageUrl);
-                    SanPham sanPham = new SanPham(name.getText().toString(), slc.getText().toString(), gia.getText().toString(), mota.getText().toString(), imageUrl, spnCategory.getSelectedItem().toString().split("")[0]);
+                    SanPham sanPham = new SanPham(name.getText().toString(), slc.getText().toString(), gia.getText().toString(), mota.getText().toString(), imageUrl, spnCategory.getSelectedItem().toString().split(" ")[0]);
                     final String currentTimeStamp = String.valueOf(System.currentTimeMillis()).substring(0, 10);
                     sanPham.setMaSP(getIntent().getStringExtra("maSP"));
                     sanPham.setDaBan(getIntent().getStringExtra("daBan"));

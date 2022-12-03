@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -24,6 +25,7 @@ import com.example.appthuongmaidientu.model.User;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -42,14 +44,16 @@ public class EditUserActivity extends AppCompatActivity {
     DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
     String mobile;
     EditText tphone,tname,tmail,tdiachi,tpass,tconfirmpass;
-    String email,name,imgUS,anhnen,diaChi,matKhau;
+    public static String email,name,imgUS,anhnen,diaChi,matKhau;
     ImageView avt,backGround;
     int choose=0;
+    boolean ktraaaa=true;
     Bitmap bitmap = null,bitmap1=null;
     boolean check1=false,check2=false;
     Button btnSave;
     String imageUrl,imageUrl1;
     User us;
+    ProgressDialog progressDialog;
     FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
     StorageReference storageReference= firebaseStorage.getReference();
 
@@ -58,6 +62,9 @@ public class EditUserActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_user);
         AnhXa();
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setCancelable(false);
+        progressDialog.setMessage("Loading...");
 
         mobile=getIntent().getStringExtra("mobile");
         databaseReference.child("users").child(mobile).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -69,7 +76,6 @@ public class EditUserActivity extends AppCompatActivity {
                 anhnen= snapshot.child("anhnen").getValue(String.class);
                 diaChi = snapshot.child("diaChi").getValue(String.class);
                 matKhau = snapshot.child("matKhau").getValue(String.class);
-                System.out.println(mobile+" "+name);
                 tphone.setText(mobile);
                 tmail.setText(email);
                 tname.setText(name);
@@ -173,6 +179,7 @@ public class EditUserActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (check()) {
+                    progressDialog.show();
                     if (check1){
                         Calendar calendar = Calendar.getInstance();
                         storageReference.child("image" + calendar.getTimeInMillis() + ".png");
@@ -198,43 +205,49 @@ public class EditUserActivity extends AppCompatActivity {
                                             @Override
                                             public void onSuccess(Uri uri) {
                                                 imageUrl = uri.toString();
+                                                System.out.println(imageUrl);
                                                 if (imageUrl.isEmpty()) {
                                                     imageUrl = "https://firebasestorage.googleapis.com/v0/b/demotmdt-26982.appspot.com/o/error-image-generic.png?alt=media&token=dbfe9456-ba97-458f-8abf-dfd6e644dd25";
                                                 }
-                                            }
-                                        });
-                                    }
-                                }
-                            }
-                        });
-                    }else imageUrl=imgUS;
-                    if (check2){
-                        Calendar calendar = Calendar.getInstance();
-                        storageReference.child("image1" + calendar.getTimeInMillis() + ".png");
-                        backGround.setDrawingCacheEnabled(true);
-                        backGround.buildDrawingCache();
-                        Bitmap bitmap = backGround.getDrawingCache();
-                        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
-                        byte[] data = baos.toByteArray();
-                        UploadTask uploadTask = storageReference.child("image1" + calendar.getTimeInMillis() + ".png").putBytes(data);
-                        uploadTask.addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
+                                                if (check2){
+                                                    Calendar calendar = Calendar.getInstance();
+                                                    storageReference.child("image1" + calendar.getTimeInMillis() + ".png");
+                                                    backGround.setDrawingCacheEnabled(true);
+                                                    backGround.buildDrawingCache();
+                                                    Bitmap bitmap = backGround.getDrawingCache();
+                                                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                                                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+                                                    byte[] data = baos.toByteArray();
+                                                    UploadTask uploadTask = storageReference.child("image1" + calendar.getTimeInMillis() + ".png").putBytes(data);
+                                                    uploadTask.addOnFailureListener(new OnFailureListener() {
+                                                        @Override
+                                                        public void onFailure(@NonNull Exception e) {
 
-                            }
-                        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                            @Override
-                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                if (taskSnapshot.getMetadata() != null) {
-                                    if (taskSnapshot.getMetadata().getReference() != null) {
-                                        Task<Uri> result = taskSnapshot.getMetadata().getReference().getDownloadUrl();
-                                        result.addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                            @Override
-                                            public void onSuccess(Uri uri) {
-                                                imageUrl1 = uri.toString();
-                                                if (imageUrl1.isEmpty()) {
-                                                    imageUrl1 = "https://firebasestorage.googleapis.com/v0/b/demotmdt-26982.appspot.com/o/error-image-generic.png?alt=media&token=dbfe9456-ba97-458f-8abf-dfd6e644dd25";
+                                                        }
+                                                    }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                                        @Override
+                                                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                                            if (taskSnapshot.getMetadata() != null) {
+                                                                if (taskSnapshot.getMetadata().getReference() != null) {
+                                                                    Task<Uri> result = taskSnapshot.getMetadata().getReference().getDownloadUrl();
+                                                                    result.addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                                                        @Override
+                                                                        public void onSuccess(Uri uri) {
+                                                                            imageUrl1 = uri.toString();
+                                                                            if (imageUrl1.isEmpty()) {
+                                                                                imageUrl1 = "https://firebasestorage.googleapis.com/v0/b/demotmdt-26982.appspot.com/o/error-image-generic.png?alt=media&token=dbfe9456-ba97-458f-8abf-dfd6e644dd25";
+                                                                            }
+                                                                            GoiIntent();
+                                                                        }
+                                                                    });
+                                                                }
+                                                            }
+                                                        }
+                                                    });
+                                                    check2=false;
+                                                }else {
+                                                    imageUrl1=anhnen;
+                                                    GoiIntent();
                                                 }
                                             }
                                         });
@@ -242,23 +255,103 @@ public class EditUserActivity extends AppCompatActivity {
                                 }
                             }
                         });
-                    }else imageUrl1=anhnen;
+                        check1=false;
+                    }else {
+                        imageUrl=imgUS;
+                        if (check2){
+                            Calendar calendar = Calendar.getInstance();
+                            storageReference.child("image1" + calendar.getTimeInMillis() + ".png");
+                            backGround.setDrawingCacheEnabled(true);
+                            backGround.buildDrawingCache();
+                            Bitmap bitmap = backGround.getDrawingCache();
+                            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                            bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+                            byte[] data = baos.toByteArray();
+                            UploadTask uploadTask = storageReference.child("image1" + calendar.getTimeInMillis() + ".png").putBytes(data);
+                            uploadTask.addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
 
-                    us=new User();
-                    us.setTenUser(tname.getText().toString());
-                    us.setSDT(mobile);
-                    us.setEmail(tmail.getText().toString());
-                    us.setAnhnen(imageUrl1);
-                    us.setImgUS(imageUrl);
-                    us.setDiaChi(tdiachi.getText().toString());
-                    us.setMatKhau(tpass.getText().toString());
-                    databaseReference.child("users").child(mobile).setValue(us);
+                                }
+                            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                @Override
+                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                    if (taskSnapshot.getMetadata() != null) {
+                                        if (taskSnapshot.getMetadata().getReference() != null) {
+                                            Task<Uri> result = taskSnapshot.getMetadata().getReference().getDownloadUrl();
+                                            result.addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                                @Override
+                                                public void onSuccess(Uri uri) {
+                                                    imageUrl1 = uri.toString();
+                                                    if (imageUrl1.isEmpty()) {
+                                                        imageUrl1 = "https://firebasestorage.googleapis.com/v0/b/demotmdt-26982.appspot.com/o/error-image-generic.png?alt=media&token=dbfe9456-ba97-458f-8abf-dfd6e644dd25";
+                                                    }
+                                                    GoiIntent();
+                                                }
+                                            });
+                                        }
+                                    }
+                                }
+                            });
+                            check2=false;
+                        }else {
+                            imageUrl1=anhnen;
+                            GoiIntent();
+                            progressDialog.dismiss();
+                            Toast.makeText(EditUserActivity.this, "Đã cập nhật. Vui lòng đăng nhập lại. ", Toast.LENGTH_SHORT).show();
+                            Intent intent= new Intent(EditUserActivity.this,LoginActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(intent);
+                        }
+                    }
 
+                    databaseReference.child("users").child(mobile).addChildEventListener(new ChildEventListener() {
+                        @Override
+                        public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                        }
+
+                        @Override
+                        public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                            progressDialog.dismiss();
+                            Toast.makeText(EditUserActivity.this, "Đã cập nhật. Vui lòng đăng nhập lại. ", Toast.LENGTH_SHORT).show();
+                            Intent intent= new Intent(EditUserActivity.this,LoginActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(intent);
+                        }
+
+                        @Override
+                        public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+                        }
+
+                        @Override
+                        public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
 
                 }else
                     Toast.makeText(EditUserActivity.this, "Vui lòng nhập đủ thông tin", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void GoiIntent() {
+        us=new User();
+        us.setTenUser(tname.getText().toString());
+        us.setSDT(mobile);
+        us.setEmail(tmail.getText().toString());
+        us.setAnhnen(imageUrl1);
+        us.setImgUS(imageUrl);
+        us.setDiaChi(tdiachi.getText().toString());
+        us.setMatKhau(tpass.getText().toString());
+        databaseReference.child("users").child(mobile).setValue(us);
     }
 
     private boolean check() {
@@ -301,7 +394,6 @@ public class EditUserActivity extends AppCompatActivity {
                 }
                 avt.setImageBitmap(bitmap);
             }
-
             else {
                 check2=true;
                 Uri uriimgt=data.getData();

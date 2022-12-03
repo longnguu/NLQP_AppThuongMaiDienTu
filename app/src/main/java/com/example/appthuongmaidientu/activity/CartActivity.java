@@ -45,6 +45,7 @@ public class CartActivity extends AppCompatActivity {
     public static String mobile;
     Button btn_DatHang;
     String m_Text;
+    String diaChi;
     Intent intentMain;
     String daban,soluongban;
     ImageView btn_back;
@@ -68,75 +69,109 @@ public class CartActivity extends AppCompatActivity {
 
         GetIntent();
 
+        mobile=getIntent().getStringExtra("mobile");
+        databaseReference.child("users").child(mobile).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                diaChi = snapshot.child("diaChi").getValue(String.class);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
         btn_DatHang.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(CartActivity.this);
-                builder.setTitle("Title");
-
-// Set up the input
-                final EditText input = new EditText(CartActivity.this);
-// Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
-                input.setInputType(InputType.TYPE_CLASS_TEXT);
-                builder.setView(input);
-
-// Set up the buttons
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        String currentTimeStamp= String.valueOf(System.currentTimeMillis());
-                        m_Text = input.getText().toString();
-                        int slb;
-                        for(int i=0;i<cartLists.size();i++){
-                            if (cartLists.get(i).getCheck().equals("1")){
-                                databaseReference.child("DonDatHang").child(getIntent().getStringExtra("mobile")).child(cartLists.get(i).getMaSP()).setValue(cartLists.get(i));
-                                databaseReference.child("DonDatHang").child(getIntent().getStringExtra("mobile")).child(cartLists.get(i).getMaSP()).child("status").setValue("Chờ xác nhận");
-
-                                String nd= "Bạn cần giao "+cartLists.get(i).getSoLuongMua()+" sản phẩm: "+cartLists.get(i).getTenSP()+" đến địa chỉ: "+m_Text+" và nhận được: "+Long.parseLong(cartLists.get(i).getGia())*Long.parseLong(cartLists.get(i).getSoLuongMua())+" VNĐ";
-                                databaseReference.child("ThongBao").child(cartLists.get(i).getUid()).child(currentTimeStamp).child(String.valueOf(i)).child("content").setValue(nd);
-                                databaseReference.child("ThongBao").child(cartLists.get(i).getUid()).child(currentTimeStamp).child(String.valueOf(i)).child("status").setValue("0");
-                                databaseReference.child("ThongBao").child(cartLists.get(i).getUid()).child(currentTimeStamp).child(String.valueOf(i)).child("id").setValue(String.valueOf(i));
-                                databaseReference.child("ThongBao").child(cartLists.get(i).getUid()).child(currentTimeStamp).child("idTB").setValue(currentTimeStamp);
-
-                                String maSP=cartLists.get(i).getMaSP();
-                                CartList cartList=cartLists.get(i);
-                                databaseReference.child("SanPham").child(cartLists.get(i).getUid()).child(cartLists.get(i).getMaSP()).addListenerForSingleValueEvent(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                                daban = snapshot.child("daBan").getValue(String.class);
-                                                soluongban =snapshot.child("soluongban").getValue(String.class);
-                                                System.out.println(daban);
-                                                databaseReference.child("SanPham").child(cartList.getUid()).child(maSP).child("soluongban").setValue(String.valueOf(Integer.parseInt(soluongban)-Integer.parseInt(cartList.getSoLuongMua())));
-                                                databaseReference.child("SanPham").child(cartList.getUid()).child(maSP).child("daBan").setValue(String.valueOf(Integer.parseInt(daban)+Integer.parseInt(cartList.getSoLuongMua())));
+                if (diaChi.isEmpty()){
+                        AlertDialog.Builder builder = new AlertDialog.Builder(CartActivity.this);
+                        builder.setMessage("Hệ thống nhận thấy bạn chưa cập nhật thông tin địa chỉ. Vui lòng cập nhật và thử lại")
+                                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        Intent intent = new Intent(CartActivity.this,EditUserActivity.class);
+                                        intent.putExtra("mobile",mobile);
+                                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                        startActivity(intent);
                                     }
-                                    @Override
-                                    public void onCancelled(@NonNull DatabaseError error) {
+                                })
+                                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        // User cancelled the dialog
+
 
                                     }
                                 });
-//
-                            }
-                        }
-                        int i=0;
-                        while (i<cartLists.size()){
-                            if (cartLists.get(i).getCheck().equals("1")){
-                                Delete(cartLists.get(i));
-                                cartLists.remove(i);
-                                CartActivity.Update(cartLists);
-                                cartAdapter.updateCart(cartLists);
-                            }else i++;
-                        }
-                        startActivity(intentMain);
+                        builder.create();
+                        builder.show();
 
-                    }
-                });
-                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
-                builder.show();
+                }else{
+                    AlertDialog.Builder builder = new AlertDialog.Builder(CartActivity.this);
+                    builder.setTitle("Nhập ghi chú cho shop");
+
+// Set up the input
+                    final EditText input = new EditText(CartActivity.this);
+// Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+                    input.setInputType(InputType.TYPE_CLASS_TEXT);
+                    builder.setView(input);
+
+// Set up the buttons
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            String currentTimeStamp= String.valueOf(System.currentTimeMillis());
+                            m_Text = input.getText().toString();
+                            int slb;
+                            for(int i=0;i<cartLists.size();i++){
+                                if (cartLists.get(i).getCheck().equals("1")){
+                                    databaseReference.child("DonDatHang").child(getIntent().getStringExtra("mobile")).child(cartLists.get(i).getMaSP()).setValue(cartLists.get(i));
+                                    databaseReference.child("DonDatHang").child(getIntent().getStringExtra("mobile")).child(cartLists.get(i).getMaSP()).child("status").setValue("Chờ xác nhận");
+
+                                    String nd= "Bạn cần giao "+cartLists.get(i).getSoLuongMua()+" sản phẩm: "+cartLists.get(i).getTenSP()+" đến địa chỉ: "+diaChi+" và nhận được: "+Long.parseLong(cartLists.get(i).getGia())*Long.parseLong(cartLists.get(i).getSoLuongMua())+" VNĐ. Gi chú của khách hàng: "+m_Text;
+                                    databaseReference.child("ThongBao").child(cartLists.get(i).getUid()).child(currentTimeStamp).child(String.valueOf(i)).child("content").setValue(nd);
+                                    databaseReference.child("ThongBao").child(cartLists.get(i).getUid()).child(currentTimeStamp).child(String.valueOf(i)).child("status").setValue("0");
+                                    databaseReference.child("ThongBao").child(cartLists.get(i).getUid()).child(currentTimeStamp).child(String.valueOf(i)).child("id").setValue(String.valueOf(i));
+                                    databaseReference.child("ThongBao").child(cartLists.get(i).getUid()).child(currentTimeStamp).child(String.valueOf(i)).child("idTB").setValue(currentTimeStamp);
+
+                                    String maSP=cartLists.get(i).getMaSP();
+                                    CartList cartList=cartLists.get(i);
+                                    databaseReference.child("SanPham").child(cartLists.get(i).getUid()).child(cartLists.get(i).getMaSP()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                            daban = snapshot.child("daBan").getValue(String.class);
+                                            soluongban =snapshot.child("soluongban").getValue(String.class);
+                                            System.out.println(daban);
+                                            databaseReference.child("SanPham").child(cartList.getUid()).child(maSP).child("soluongban").setValue(String.valueOf(Integer.parseInt(soluongban)-Integer.parseInt(cartList.getSoLuongMua())));
+                                            databaseReference.child("SanPham").child(cartList.getUid()).child(maSP).child("daBan").setValue(String.valueOf(Integer.parseInt(daban)+Integer.parseInt(cartList.getSoLuongMua())));
+                                        }
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+
+                                        }
+                                    });
+//
+                                }
+                            }
+                            int i=0;
+                            while (i<cartLists.size()){
+                                if (cartLists.get(i).getCheck().equals("1")){
+                                    Delete(cartLists.get(i));
+                                    cartLists.remove(i);
+                                    CartActivity.Update(cartLists);
+                                    cartAdapter.updateCart(cartLists);
+                                }else i++;
+                            }
+                            startActivity(intentMain);
+
+                        }
+                    });
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+                    builder.show();
+                }
             }
         });
         btn_back=findViewById(R.id.btn_backMain);

@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -90,6 +91,7 @@ public class DetailsSanPham extends AppCompatActivity {
                 int slg = Integer.parseInt(editText.getText().toString().split("/")[0]);
                 CartList cartList = new CartList(maSP,namesp,String.valueOf(slg),"0",giasp,uid,img);
                 cartList.setSlb(slcSP);
+                Toast.makeText(DetailsSanPham.this, "Đã thêm", Toast.LENGTH_SHORT).show();
                 databaseReference.child("GioHang").child(mobile).child(maSP).setValue(cartList);
             }
         });

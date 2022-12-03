@@ -171,7 +171,7 @@ public class VerifyPhoneNumberActivity extends AppCompatActivity {
         us.setImgUS("https://firebasestorage.googleapis.com/v0/b/demotmdt-26982.appspot.com/o/icon_user_default.jpg?alt=media&token=ce5c75d8-4d3b-4d20-8e34-de952becf786");
         us.setDiaChi("");
         databaseReference.child("users").child(phoneNumber).setValue(us);
-        intent.putExtra("phone", phoneNumber);
+        //intent.putExtra("phone", phoneNumber);
         startActivity(intent);
     }
 
