@@ -54,6 +54,7 @@
                     android:textSize="20dp"
                     android:textStyle="bold"
                     android:text="Tổng tiền: 41"
+                    android:id="@+id/totalMoney"
 
                     android:fontFamily="@font/bungee"
                     android:includeFontPadding="false">
@@ -70,6 +71,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:id="@+id/checkboxTotal"
                     android:text="Tất cả"></CheckBox>
 
                 <Button
@@ -77,7 +79,7 @@
 
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:id="@+id/btn_chatDetails"
+                    android:id="@+id/btn_DatHang"
                     android:text="Đặt hàng"
                     android:textColor="@color/black"/>
 
