@@ -7,7 +7,6 @@
     android:fitsSystemWindows="false"
     tools:context=".activity.MainActivity">
     <androidx.cardview.widget.CardView
-        android:paddingTop="30dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/topnav"
@@ -16,34 +15,30 @@
             android:layout_marginTop="30dp"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:background="@android:color/transparent">
+            android:background="@android:color/transparent"
+            android:gravity="center">
 
             <SearchView
+                android:queryHint="Tiêu xà láng ..."
                 android:id="@+id/topSearchView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
+                android:layout_margin="10dp"
                 android:layout_toStartOf="@+id/layouttopnaccart"
                 android:background="@color/white100"
-                android:searchIcon="@drawable/icon_search"></SearchView>
+                android:searchIcon="@drawable/search_24px"></SearchView>
             <RelativeLayout
                 android:id="@+id/layouttopnacc"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_alignParentEnd="true">
+                android:layout_alignParentEnd="true"
+                android:gravity="center">
                 <ImageView
                     android:id="@+id/topnavMess"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     android:layout_alignParentEnd="true"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:src="@drawable/icon_messenger" />
+                    android:src="@drawable/sms" />
                 <androidx.cardview.widget.CardView
                     android:id="@+id/unseenMain"
                     android:visibility="gone"
@@ -68,22 +63,19 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_toStartOf="@+id/layouttopnacc"
-                >
+                android:gravity="center">
                 <ImageView
+
                     android:id="@+id/topnavCart"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:src="@drawable/icon_cart" />
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/cart" />
                 <androidx.cardview.widget.CardView
                     android:id="@+id/slCartMain"
                     android:visibility="gone"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    app:cardCornerRadius="20dp"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    app:cardCornerRadius="18dp"
                     android:layout_alignParentEnd="true"
                     app:cardBackgroundColor="@color/red">
                     <TextView
@@ -119,7 +111,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/navnav"
-        android:layout_marginTop="5dp"
         android:layout_marginBottom="0dp"
         tools:ignore="SpeakableTextPresentCheck"></androidx.viewpager.widget.ViewPager>
 
