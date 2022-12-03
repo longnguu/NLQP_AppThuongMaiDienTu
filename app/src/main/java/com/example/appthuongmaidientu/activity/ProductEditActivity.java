@@ -20,9 +20,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.appthuongmaidientu.Adapter.DMSPAdapter;
 import com.example.appthuongmaidientu.R;
-import com.example.appthuongmaidientu.model.DMSP;
 import com.example.appthuongmaidientu.model.SanPham;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
