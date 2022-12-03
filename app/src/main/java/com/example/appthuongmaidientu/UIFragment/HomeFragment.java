@@ -2,6 +2,7 @@ package com.example.appthuongmaidientu.UIFragment;
 
 import static android.view.WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS;
 
+import android.app.ProgressDialog;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -59,14 +60,15 @@ public class HomeFragment extends Fragment {
     RecyclerView recyclerView,recyclerViewSP, recyclerViewDMSP;
     DanhMucAdapter danhMucAdapter;
     ArrayList<DanhMuc> danhMucs;
-    ArrayList<SanPham> sanPhams;
+    public static ArrayList<SanPham> sanPhams;
     ArrayList<DMSP> dmsps;
-    SanPhamAdapter sanPhamAdapter;
+    public static SanPhamAdapter sanPhamAdapter;
     GestureDetector gestureDetector;
     ScrollView scrollView;
     CardView topCV;
     SearchView topSV;
-    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+    public static ProgressDialog progressDialog;
+    public static DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -113,6 +115,9 @@ public class HomeFragment extends Fragment {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             getActivity().getWindow().getDecorView().getWindowInsetsController().setSystemBarsAppearance(APPEARANCE_LIGHT_STATUS_BARS, APPEARANCE_LIGHT_STATUS_BARS);
         }
+        progressDialog = new ProgressDialog(getContext());
+        progressDialog.setCancelable(false);
+        progressDialog.setMessage("Loading...");
         viewPager = view.findViewById(R.id.ViewPager    );
         circleIndicator = view.findViewById(R.id.circleindicator);
         mListPhoto = getListPhoto();
@@ -298,5 +303,70 @@ public class HomeFragment extends Fragment {
             mTimer.cancel();
             mTimer = null;
         }
+    }
+    public static void update(int pos){
+        progressDialog.show();
+        sanPhams=new ArrayList<>();
+        databaseReference.child("SanPham").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                sanPhams.clear();
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()){
+                    for (DataSnapshot dataSnapshot1:dataSnapshot.getChildren()){
+                        if(Integer.parseInt( dataSnapshot1.child("loai").getValue(String.class))==pos){
+                                String ten= dataSnapshot1.child("ten").getValue(String.class);
+                                SanPham sanPham = new SanPham(ten);
+                                sanPham.setImg(dataSnapshot1.child("img").getValue(String.class));
+                                sanPham.setMaSP(dataSnapshot1.getKey());
+                                sanPham.setUID(dataSnapshot.getKey());
+                                sanPham.setMota(dataSnapshot1.child("mota").getValue(String.class));
+                                sanPham.setGia(dataSnapshot1.child("gia").getValue(String.class));
+                                sanPham.setDaBan(dataSnapshot1.child("daBan").getValue(String.class));
+                                sanPham.setSoluongban(dataSnapshot1.child("soluongban").getValue(String.class));
+                                sanPhams.add(sanPham);
+                            }
+                            sanPhamAdapter.updateSanPham(sanPhams);
+                    }
+                }
+                progressDialog.dismiss();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                progressDialog.dismiss();
+
+            }
+        });
+    }
+    public static void update(){
+        progressDialog.show();
+        sanPhams=new ArrayList<>();
+        databaseReference.child("SanPham").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                sanPhams.clear();
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()){
+                    for (DataSnapshot dataSnapshot1:dataSnapshot.getChildren()){
+                            String ten= dataSnapshot1.child("ten").getValue(String.class);
+                            SanPham sanPham = new SanPham(ten);
+                            sanPham.setImg(dataSnapshot1.child("img").getValue(String.class));
+                            sanPham.setMaSP(dataSnapshot1.getKey());
+                            sanPham.setUID(dataSnapshot.getKey());
+                            sanPham.setMota(dataSnapshot1.child("mota").getValue(String.class));
+                            sanPham.setGia(dataSnapshot1.child("gia").getValue(String.class));
+                            sanPham.setDaBan(dataSnapshot1.child("daBan").getValue(String.class));
+                            sanPham.setSoluongban(dataSnapshot1.child("soluongban").getValue(String.class));
+                            sanPhams.add(sanPham);
+                        }
+                        sanPhamAdapter.updateSanPham(sanPhams);
+                }
+                progressDialog.dismiss();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                progressDialog.dismiss();
+            }
+        });
     }
 }

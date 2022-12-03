@@ -37,7 +37,7 @@ import java.util.List;
 
 public class DetailsSanPham extends AppCompatActivity {
 
-    String mobile,email,name,namesp,motasp,giasp,img,uid,maSP,slcSP,daBan;
+    String mobile,email,name,namesp,motasp,giasp,img,uid,maSP,slcSP,daBan,img1;
     Button btnchinhsua,bthaddcart,btnchat;
     LinearLayout linearLayout;
     ImageView imageView,imgShop;
@@ -215,6 +215,8 @@ public class DetailsSanPham extends AppCompatActivity {
                 intent.putExtra("motaSP",motasp);
                 intent.putExtra("slcSP",slcSP);
                 intent.putExtra("daBan",daBan);
+                intent.putExtra("imgSP",img1);
+                System.out.println(img1);
                 startActivity(intent);
             }
         });
@@ -247,7 +249,7 @@ public class DetailsSanPham extends AppCompatActivity {
         namesp = getIntent().getStringExtra("namesp");
         motasp = getIntent().getStringExtra("motasp");
         giasp = getIntent().getStringExtra("giasp");
-        img = getIntent().getStringExtra("imgsp");
+        img = getIntent().getStringExtra("imgsp");img1 = getIntent().getStringExtra("imgsp");
         uid = getIntent().getStringExtra("UID");
         maSP=getIntent().getStringExtra("maSP");
         slcSP=getIntent().getStringExtra("slcSP");

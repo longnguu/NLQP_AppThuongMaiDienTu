@@ -4,6 +4,7 @@
     android:orientation="vertical"
     android:layout_width="75dp"
     android:layout_height="wrap_content"
+    android:id="@+id/layoutdmsp"
     android:layout_margin="10dp">
     <androidx.cardview.widget.CardView
         android:layout_width="40dp"

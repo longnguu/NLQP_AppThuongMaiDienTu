@@ -6,12 +6,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.appthuongmaidientu.R;
+import com.example.appthuongmaidientu.UIFragment.HomeFragment;
 import com.example.appthuongmaidientu.model.DMSP;
 import com.example.appthuongmaidientu.model.DanhMuc;
 import com.example.appthuongmaidientu.model.SanPham;
@@ -38,9 +40,18 @@ public class DMSPAdapter extends RecyclerView.Adapter<DMSPAdapter.ViewHolder> {
     }
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        int i=position;
         DMSP computer =danhMucList.get(position);
         holder.tenDanhMuc.setText(computer.getName());
         Picasso.get().load(computer.getHinhanh()).into(img_cate);
+        holder.layoutdmsp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (i>0)
+                    HomeFragment.update(i);
+                else HomeFragment.update();
+            }
+        });
     }
     public void updateDanhMuc(List<DMSP> danhMucs){
         this.danhMucList=danhMucs;
@@ -55,6 +66,7 @@ public class DMSPAdapter extends RecyclerView.Adapter<DMSPAdapter.ViewHolder> {
         private View itemview;
         public TextView tenDanhMuc;
         public Button detail_button;
+        LinearLayout layoutdmsp;
 
 
         public ViewHolder(View itemView) {
@@ -62,6 +74,7 @@ public class DMSPAdapter extends RecyclerView.Adapter<DMSPAdapter.ViewHolder> {
             itemview = itemView;
             tenDanhMuc = itemView.findViewById(R.id.name_cate);
             img_cate = itemView.findViewById(R.id.img_cate);
+            layoutdmsp=itemView.findViewById(R.id.layoutdmsp);
 
             //Xử lý khi nút Chi tiết được bấm
         }

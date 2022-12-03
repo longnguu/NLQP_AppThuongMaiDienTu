@@ -55,6 +55,7 @@ public class ProductEditActivity extends AppCompatActivity {
     Button btnSave,btnPick;
     ProgressDialog progressDialog;
     String mobile;
+    boolean ktraa=false;
 
 
 
@@ -77,6 +78,7 @@ public class ProductEditActivity extends AppCompatActivity {
                 dmmmm.clear();
                 for (DataSnapshot dataSnapshot:snapshot.getChildren()){
                     String asd=dataSnapshot.child("id").getValue(String.class)+" - "+dataSnapshot.child("ten").getValue(String.class);
+                    if (Integer.parseInt(dataSnapshot.child("id").getValue(String.class))>0)
                     dmmmm.add(asd);
                     System.out.println(asd);
                 }
@@ -102,8 +104,9 @@ public class ProductEditActivity extends AppCompatActivity {
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (check()){
-                    progressDialog.show();
+                if (check()) {
+                    if (ktraa){
+                        progressDialog.show();
                     Calendar calendar = Calendar.getInstance();
                     storageReference.child("image" + calendar.getTimeInMillis() + ".png");
                     imgedt.setDrawingCacheEnabled(true);
@@ -152,7 +155,26 @@ public class ProductEditActivity extends AppCompatActivity {
                             }
                         }
                     });
-
+                    ktraa=false;
+                }else {
+                    String imageUrl = getIntent().getStringExtra("imgSP");
+                        System.out.println(imageUrl);
+                    SanPham sanPham = new SanPham(name.getText().toString(), slc.getText().toString(), gia.getText().toString(), mota.getText().toString(), imageUrl, spnCategory.getSelectedItem().toString().split("")[0]);
+                    final String currentTimeStamp = String.valueOf(System.currentTimeMillis()).substring(0, 10);
+                    sanPham.setMaSP(getIntent().getStringExtra("maSP"));
+                    sanPham.setDaBan(getIntent().getStringExtra("daBan"));
+                    sanPham.setImg(imageUrl);
+                    databaseReference.child("SanPham").child(getIntent().getStringExtra("mobile")).child(getIntent().getStringExtra("maSP")).setValue(sanPham);
+                    Toast.makeText(ProductEditActivity.this, "Đã cập nhật.", Toast.LENGTH_SHORT).show();
+                    name.setText("");
+                    slc.setText("");
+                    gia.setText("");
+                    mota.setText("");
+                    spnCategory.setSelection(0);
+                    imgedt.setImageDrawable(null);
+                    progressDialog.dismiss();
+                    ktraa=false;
+                    }
                 }else
                     Toast.makeText(ProductEditActivity.this, "Vui lòng nhập đủ thông tin", Toast.LENGTH_SHORT).show();
             }
@@ -180,6 +202,7 @@ public class ProductEditActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
             imgedt.setImageBitmap(bitmap);
+            ktraa=true;
 
         }
     }

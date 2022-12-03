@@ -70,7 +70,9 @@ public class ThemSanPhamActivity extends AppCompatActivity {
                 dmmmm.clear();
                 for (DataSnapshot dataSnapshot:snapshot.getChildren()){
                     String asd=dataSnapshot.child("id").getValue(String.class)+" - "+dataSnapshot.child("ten").getValue(String.class);
-                    dmmmm.add(asd);
+                    if (Integer.parseInt(asd.split(" ")[0])>0){
+                        dmmmm.add(asd);
+                    }
                     System.out.println(asd.split(" ")[0]);
                     System.out.println(asd);
                 }

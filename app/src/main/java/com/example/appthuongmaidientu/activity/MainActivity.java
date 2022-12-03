@@ -178,8 +178,8 @@ public class MainActivity extends AppCompatActivity {
                         break;
                 }
                 Window window = MainActivity.this.getWindow();
-                window.setStatusBarColor(MainActivity.this.getResources().getColor(R.color.pri00));
-                topCV.setCardBackgroundColor(MainActivity.this.getResources().getColor(R.color.pri00));
+                window.setStatusBarColor(MainActivity.this.getResources().getColor(R.color.pri100));
+                topCV.setCardBackgroundColor(MainActivity.this.getResources().getColor(R.color.pri100));
                 return true;
             }
         });
@@ -210,8 +210,8 @@ public class MainActivity extends AppCompatActivity {
                         break;
                 }
                 Window window = MainActivity.this.getWindow();
-                window.setStatusBarColor(MainActivity.this.getResources().getColor(R.color.pri00));
-                topCV.setCardBackgroundColor(MainActivity.this.getResources().getColor(R.color.pri00));
+                window.setStatusBarColor(MainActivity.this.getResources().getColor(R.color.pri100));
+                topCV.setCardBackgroundColor(MainActivity.this.getResources().getColor(R.color.pri100));
 
             }
 
