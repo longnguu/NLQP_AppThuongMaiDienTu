@@ -61,9 +61,7 @@ public class QuanLySanPhamActivity extends AppCompatActivity {
                     sanPham.setUID(getIntent().getStringExtra("mobile"));
                     sanPham.setMota(dataSnapshot.child("mota").getValue(String.class));
                     sanPham.setGia(dataSnapshot.child("gia").getValue(String.class));
-                    sanPham.setDaBan("0");
-
-
+                    sanPham.setDaBan(dataSnapshot.child("daBan").getValue(String.class));
                     sanPhams.add(sanPham);
                     sanPhamAdapter.updateSanPham(sanPhams);
                 }

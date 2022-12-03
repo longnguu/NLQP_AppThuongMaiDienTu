@@ -4,10 +4,23 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.appthuongmaidientu.R;
+import com.example.appthuongmaidientu.model.NotifyList;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -15,6 +28,13 @@ import com.example.appthuongmaidientu.R;
  * create an instance of this fragment.
  */
 public class NotifiFragment extends Fragment {
+
+    ListView listView;
+    List<NotifyList> notifyLists=new ArrayList<>();
+    ArrayAdapter<NotifyList> arrayAdapter;
+    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+
+
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -54,6 +74,16 @@ public class NotifiFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+//        
+
+
+
     }
 
     @Override

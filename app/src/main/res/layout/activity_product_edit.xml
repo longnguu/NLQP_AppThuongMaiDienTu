@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".activity.ProductEditActivity">
     <ScrollView
+        android:layout_marginTop="30dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <LinearLayout
@@ -15,7 +16,6 @@
             android:orientation="vertical"
             android:paddingHorizontal="20dp"
             android:paddingBottom="20dp">
-
             <TextView
                 android:id="@+id/btn_editprofile"
                 android:layout_width="match_parent"
@@ -36,10 +36,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
 
-                android:hint="Sản phẩm">
+                android:hint="Tên sản phẩm">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edt_phone"
+                    android:id="@+id/edt_tenedtSP"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawablePadding="10dp"
@@ -55,7 +55,7 @@
                 android:hint="Giá bán">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edt_name"
+                    android:id="@+id/edt_giaedtSP"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawablePadding="10dp"
@@ -71,7 +71,7 @@
                 android:hint="Số lượng hiện còn">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edt_email"
+                    android:id="@+id/edt_slcedtSP"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawablePadding="10dp"
@@ -87,7 +87,7 @@
                 android:hint="Mô tả">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edt_password"
+                    android:id="@+id/edt_motaedtSP"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawablePadding="10dp"
@@ -102,14 +102,39 @@
                 android:hint="Danh mục">
 
                 <Spinner
-                    android:id="@+id/sp_danhmuc"
-                    android:layout_marginTop="30dp"
+                    android:id="@+id/edt_danhmucedtSP"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="30dp" />
             </com.google.android.material.textfield.TextInputLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_weight="1">
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/edt_imgedtSP"/>
+                </RelativeLayout>
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_weight="2"
+                    android:text="Pick"
+                    android:textColor="@color/black"
+                    android:id="@+id/btn_pickedtSP">
+
+                </Button>
+
+            </LinearLayout>
             <Button
-                android:id="@+id/btn_logout"
+                android:id="@+id/btn_SaveedtSP"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/button_padding"

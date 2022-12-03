@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.appthuongmaidientu.R;
+import com.example.appthuongmaidientu.control.MemoryData;
 import com.example.appthuongmaidientu.model.User;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -48,7 +49,6 @@ public class LoginActivity extends AppCompatActivity {
 
         AnhXa();
         edt_phone.setText(getIntent().getStringExtra("phone"));
-        phone = getIntent().getStringExtra("phone");
         edt_password.setText(getIntent().getStringExtra("password"));
 
         //Hiển thị tài khoản đã lưu
@@ -71,7 +71,6 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
-
                 startActivity(intent);
             }
         });
@@ -102,12 +101,27 @@ public class LoginActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Vui lòng không để trống!",
                     Toast.LENGTH_LONG).show();
         } else {
-            databaseReference.child("users").child("+84"+phone.substring(1)).child("matKhau").addListenerForSingleValueEvent(new ValueEventListener() {
+            databaseReference.child("users").child("+84"+phone.substring(1)).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    if (snapshot.getValue(String.class).equals(password)){
+                    if (snapshot.child("matKhau").getValue(String.class).equals(password)){
                         Toast.makeText(getApplicationContext(), "Đăng nhập thành công",
                                 Toast.LENGTH_SHORT).show();
+                        System.out.println(snapshot.child("matKhau").getValue(String.class));
+                        String email= snapshot.child("email").getValue(String.class);
+                        String mobile= snapshot.child("sdt").getValue(String.class);
+                        String name= snapshot.child("tenUser").getValue(String.class);
+                        String imgUS= snapshot.child("imgUS").getValue(String.class);
+                        String anhnen= snapshot.child("anhnen").getValue(String.class);
+                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        intent.putExtra("name",name);
+                        intent.putExtra("email",email);
+                        intent.putExtra("imgUS",imgUS);
+                        intent.putExtra("anhnen",anhnen);
+                        intent.putExtra("mobile",mobile);
+                        MemoryData.saveData("+84"+phone.substring(1),LoginActivity.this);
+                        System.out.println("abc"+mobile);
+                        startActivity(intent);
                         if (checkBox_rememberUP.isChecked()) {
                             SharedPreferences.Editor editor = sharedPreferences.edit();
                             editor.putString("PHONE", phone);
@@ -121,14 +135,6 @@ public class LoginActivity extends AppCompatActivity {
                             editor.putBoolean("REMEMBER", false);
                             editor.commit();
                         }
-                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                        intent.putExtra("phone", phone);
-                        System.out.println(phone);
-                        intent.putExtra("email",snapshot.child("email").getValue(String.class));
-                        intent.putExtra("mobile",snapshot.child("sdt").getValue(String.class));
-                        intent.putExtra("name",snapshot.child("tenUser").getValue(String.class));
-                        intent.putExtra("imgUS",snapshot.child("imgUS").getValue(String.class));
-                        startActivity(intent);
                     }else Toast.makeText(getApplicationContext(), "Sai thông tin tài khoản hoặc mật khẩu",
                             Toast.LENGTH_SHORT).show();
                 }
@@ -142,9 +148,5 @@ public class LoginActivity extends AppCompatActivity {
     public void callForgetPassword(View view) {
         Intent intent = new Intent(getApplicationContext(), ForgetPasswordActivity.class);
         startActivity(intent);
-    }
-
-    public String getMyData() {
-        return phone;
     }
 }

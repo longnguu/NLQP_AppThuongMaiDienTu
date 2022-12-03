@@ -152,7 +152,6 @@ public class HomeFragment extends Fragment {
                 dmsps.clear();
                 for (DataSnapshot dataSnapshot:snapshot.getChildren()){
                     dmsps.add(new DMSP(dataSnapshot.child("ten").getValue(String.class),dataSnapshot.child("hinhanh").getValue(String.class),dataSnapshot.child("id").getValue(String.class)));
-                    System.out.println(dataSnapshot.child("hinhanh").getValue(String.class));
                 }
                 dmspAdapter.updateDanhMuc(dmsps);
             }
@@ -176,10 +175,10 @@ public class HomeFragment extends Fragment {
                         sanPham.setImg(dataSnapshot1.child("img").getValue(String.class));
                         sanPham.setMaSP(dataSnapshot1.getKey());
                         sanPham.setUID(dataSnapshot.getKey());
-                        System.out.println(dataSnapshot.getKey()+"UOD ");
                         sanPham.setMota(dataSnapshot1.child("mota").getValue(String.class));
                         sanPham.setGia(dataSnapshot1.child("gia").getValue(String.class));
-                        sanPham.setDaBan("0");
+                        sanPham.setDaBan(dataSnapshot1.child("daBan").getValue(String.class));
+                        sanPham.setSoluongban(dataSnapshot1.child("soluongban").getValue(String.class));
                         sanPhams.add(sanPham);
                     }
                     sanPhamAdapter.updateSanPham(sanPhams);
@@ -191,38 +190,7 @@ public class HomeFragment extends Fragment {
 
             }
         });
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            scrollView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
-                @Override
-                public void onScrollChange(View view, int i, int i1, int i2, int i3) {
-                    int color = R.color.white10;
-                    if (i1<20)
-                        color=R.color.white10;
-                        else if(i1<40)
-                            color=R.color.white20;
-                            else if(i1<60)
-                                color=R.color.white30;
-                                else if(i1<80)
-                                    color=R.color.white40;
-                                    else if (i1<100)
-                                        color=R.color.white50;
-                                        else if (i1<120)
-                                            color=R.color.white60;
-                                            else if (i1<140)
-                                                color=R.color.white70;
-                                                else if(i1<160)
-                                                    color=R.color.white80;
-                                                    else if (i1<180)
-                                                        color=R.color.white90;
-                                                        else
-                                                            color=R.color.white100;
-                    Window window = getActivity().getWindow();
-                    window.setStatusBarColor(getActivity().getResources().getColor(color));
-                    topCV.setCardBackgroundColor(getActivity().getResources().getColor(color));
-                    topSV.setBackgroundColor(getActivity().getResources().getColor(color));
-                }
-            });
-        }
+        EventScroll();
         danhMucAdapter = new DanhMucAdapter(danhMucs, getContext());
         GridLayoutManager linearLayoutManager = new GridLayoutManager(getContext(),1,RecyclerView.HORIZONTAL,false);
         recyclerView.setAdapter(danhMucAdapter);
@@ -235,7 +203,7 @@ public class HomeFragment extends Fragment {
 
 
         dmspAdapter = new DMSPAdapter(dmsps, getContext());
-         linearLayoutManager = new GridLayoutManager(getContext(),2,RecyclerView.HORIZONTAL,false);
+        linearLayoutManager = new GridLayoutManager(getContext(),2,RecyclerView.HORIZONTAL,false);
         recyclerViewDMSP.setAdapter(dmspAdapter);
         recyclerViewDMSP.setLayoutManager(linearLayoutManager);
 
@@ -243,6 +211,43 @@ public class HomeFragment extends Fragment {
 
         autoSildeImages();
         super.onViewCreated(view, savedInstanceState);
+    }
+
+    private void EventScroll() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            scrollView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+                @Override
+                public void onScrollChange(View view, int i, int i1, int i2, int i3) {
+                    int color = R.color.white10;
+                    if (i1<20)
+                        color=R.color.pri00;
+                    else if(i1<40)
+                        color=R.color.pri10;
+                    else if(i1<60)
+                        color=R.color.pri20;
+                    else if(i1<80)
+                        color=R.color.pri30;
+                    else if (i1<100)
+                        color=R.color.pri40;
+                    else if (i1<120)
+                        color=R.color.pri50;
+                    else if (i1<140)
+                        color=R.color.pri60;
+                    else if(i1<160)
+                        color=R.color.pri70;
+                    else if (i1<180)
+                        color=R.color.pri80;
+                    else if (i1<200)
+                        color=R.color.pri90;
+                    else
+                        color=R.color.pri100;
+                    Window window = getActivity().getWindow();
+                    window.setStatusBarColor(getActivity().getResources().getColor(color));
+                    topCV.setCardBackgroundColor(getActivity().getResources().getColor(color));
+                    //topSV.setBackgroundColor(getActivity().getResources().getColor(color));
+                }
+            });
+        }
     }
 
 
