@@ -169,6 +169,7 @@ public class VerifyPhoneNumberActivity extends AppCompatActivity {
         us.setEmail(getIntent().getStringExtra("email"));
         us.setAnhnen("https://firebasestorage.googleapis.com/v0/b/demotmdt-26982.appspot.com/o/anh_nen_default.png?alt=media&token=6dd72a7f-d897-40cd-b0b5-67b5a622dc19");
         us.setImgUS("https://firebasestorage.googleapis.com/v0/b/demotmdt-26982.appspot.com/o/icon_user_default.jpg?alt=media&token=ce5c75d8-4d3b-4d20-8e34-de952becf786");
+        us.setDiaChi("");
         databaseReference.child("users").child(phoneNumber).setValue(us);
         intent.putExtra("phone", phoneNumber);
         startActivity(intent);

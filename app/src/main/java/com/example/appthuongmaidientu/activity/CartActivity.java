@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
@@ -14,12 +16,16 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.appthuongmaidientu.Adapter.CartAdapter;
 import com.example.appthuongmaidientu.Adapter.SanPhamAdapter;
 import com.example.appthuongmaidientu.R;
+import com.example.appthuongmaidientu.control.MemoryData;
 import com.example.appthuongmaidientu.model.CartList;
+import com.example.appthuongmaidientu.model.SanPham;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -39,6 +45,9 @@ public class CartActivity extends AppCompatActivity {
     public static String mobile;
     Button btn_DatHang;
     String m_Text;
+    Intent intentMain;
+    String daban,soluongban;
+    ImageView btn_back;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +65,8 @@ public class CartActivity extends AppCompatActivity {
         mobile=getIntent().getStringExtra("mobile");
         dachon.setText("Đã chọn: 0");
         totalMoney.setText("Tổng tiền: 0");
+
+        GetIntent();
 
         btn_DatHang.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,17 +86,35 @@ public class CartActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         String currentTimeStamp= String.valueOf(System.currentTimeMillis());
                         m_Text = input.getText().toString();
+                        int slb;
                         for(int i=0;i<cartLists.size();i++){
                             if (cartLists.get(i).getCheck().equals("1")){
-                                databaseReference.child("DonDatHang").child(getIntent().getStringExtra("mobile")).child(currentTimeStamp).child(String.valueOf(i)).setValue(cartLists.get(i));
-                                databaseReference.child("DonDatHang").child(getIntent().getStringExtra("mobile")).child(currentTimeStamp).child("maDatHang").setValue(currentTimeStamp);
-                                databaseReference.child("DonDatHang").child(getIntent().getStringExtra("mobile")).child(currentTimeStamp).child(String.valueOf(i)).child("maDH").setValue(String.valueOf(i));
+                                databaseReference.child("DonDatHang").child(getIntent().getStringExtra("mobile")).child(cartLists.get(i).getMaSP()).setValue(cartLists.get(i));
+                                databaseReference.child("DonDatHang").child(getIntent().getStringExtra("mobile")).child(cartLists.get(i).getMaSP()).child("status").setValue("Chờ xác nhận");
 
                                 String nd= "Bạn cần giao "+cartLists.get(i).getSoLuongMua()+" sản phẩm: "+cartLists.get(i).getTenSP()+" đến địa chỉ: "+m_Text+" và nhận được: "+Long.parseLong(cartLists.get(i).getGia())*Long.parseLong(cartLists.get(i).getSoLuongMua())+" VNĐ";
                                 databaseReference.child("ThongBao").child(cartLists.get(i).getUid()).child(currentTimeStamp).child(String.valueOf(i)).child("content").setValue(nd);
                                 databaseReference.child("ThongBao").child(cartLists.get(i).getUid()).child(currentTimeStamp).child(String.valueOf(i)).child("status").setValue("0");
-                                databaseReference.child("ThongBao").child(cartLists.get(i).getUid()).child(currentTimeStamp).child(String.valueOf(i)).child("id").setValue(i);
+                                databaseReference.child("ThongBao").child(cartLists.get(i).getUid()).child(currentTimeStamp).child(String.valueOf(i)).child("id").setValue(String.valueOf(i));
                                 databaseReference.child("ThongBao").child(cartLists.get(i).getUid()).child(currentTimeStamp).child("idTB").setValue(currentTimeStamp);
+
+                                String maSP=cartLists.get(i).getMaSP();
+                                CartList cartList=cartLists.get(i);
+                                databaseReference.child("SanPham").child(cartLists.get(i).getUid()).child(cartLists.get(i).getMaSP()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                daban = snapshot.child("daBan").getValue(String.class);
+                                                soluongban =snapshot.child("soluongban").getValue(String.class);
+                                                System.out.println(daban);
+                                                databaseReference.child("SanPham").child(cartList.getUid()).child(maSP).child("soluongban").setValue(String.valueOf(Integer.parseInt(soluongban)-Integer.parseInt(cartList.getSoLuongMua())));
+                                                databaseReference.child("SanPham").child(cartList.getUid()).child(maSP).child("daBan").setValue(String.valueOf(Integer.parseInt(daban)+Integer.parseInt(cartList.getSoLuongMua())));
+                                    }
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+
+                                    }
+                                });
+//
                             }
                         }
                         int i=0;
@@ -97,6 +126,7 @@ public class CartActivity extends AppCompatActivity {
                                 cartAdapter.updateCart(cartLists);
                             }else i++;
                         }
+                        startActivity(intentMain);
 
                     }
                 });
@@ -107,6 +137,16 @@ public class CartActivity extends AppCompatActivity {
                     }
                 });
                 builder.show();
+            }
+        });
+        btn_back=findViewById(R.id.btn_backMain);
+
+        btn_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                intentMain.putExtra("acti","login");
+                startActivity(intentMain);
+
             }
         });
 
@@ -171,5 +211,30 @@ public class CartActivity extends AppCompatActivity {
     }
     public static void Delete(CartList cartLists){
             databaseReference.child("GioHang").child(mobile).child(cartLists.getMaSP()).removeValue();
+    }
+    public void GetIntent(){
+        databaseReference.child("users").child(mobile).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                System.out.println(snapshot.child("matKhau").getValue(String.class));
+                String email= snapshot.child("email").getValue(String.class);
+                String mobile= snapshot.child("sdt").getValue(String.class);
+                String name= snapshot.child("tenUser").getValue(String.class);
+                String imgUS= snapshot.child("imgUS").getValue(String.class);
+                String anhnen= snapshot.child("anhnen").getValue(String.class);
+                intentMain = new Intent(CartActivity.this, MainActivity.class);
+                intentMain.putExtra("name",name);
+                intentMain.putExtra("email",email);
+                intentMain.putExtra("imgUS",imgUS);
+                intentMain.putExtra("anhnen",anhnen);
+                intentMain.putExtra("mobile",mobile);
+                intentMain.putExtra("acti","cart");
+                intentMain.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
     }
 }

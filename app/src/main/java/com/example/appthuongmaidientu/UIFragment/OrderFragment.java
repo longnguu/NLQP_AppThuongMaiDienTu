@@ -2,13 +2,32 @@ package com.example.appthuongmaidientu.UIFragment;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.appthuongmaidientu.Adapter.CartAdapter;
+import com.example.appthuongmaidientu.Adapter.DonDatHangAdapter;
+import com.example.appthuongmaidientu.Adapter.SanPhamAdapter;
 import com.example.appthuongmaidientu.R;
+import com.example.appthuongmaidientu.activity.CartActivity;
+import com.example.appthuongmaidientu.model.CartList;
+import com.example.appthuongmaidientu.model.SanPham;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import org.checkerframework.checker.units.qual.A;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -16,6 +35,11 @@ import com.example.appthuongmaidientu.R;
  * create an instance of this fragment.
  */
 public class OrderFragment extends Fragment {
+
+    DonDatHangAdapter donDatHangAdapter;
+    ArrayList<CartList> cartLists=new ArrayList<>();
+    DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference();
+    RecyclerView recyclerView;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -55,6 +79,45 @@ public class OrderFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        cartLists = new ArrayList<>();
+        recyclerView=view.findViewById(R.id.recyclerDDH);
+        donDatHangAdapter = new DonDatHangAdapter(cartLists,getContext());
+        GridLayoutManager linearLayoutManager = new GridLayoutManager(getContext(), 1, RecyclerView.VERTICAL, false);
+        recyclerView.setAdapter(donDatHangAdapter);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        databaseReference.child("DonDatHang").child(getActivity().getIntent().getStringExtra("mobile")).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                cartLists.clear();
+                int i=0;
+                for (DataSnapshot dataSnapshot:snapshot.getChildren()){
+                    String tenSP=dataSnapshot.child("tenSP").getValue(String.class);
+                    String gia=dataSnapshot.child("gia").getValue(String.class);
+                    String check=dataSnapshot.child("check").getValue(String.class);
+                    String name=dataSnapshot.child("name").getValue(String.class);
+                    String maSP=dataSnapshot.child("maSP").getValue(String.class);
+                    String uid=dataSnapshot.child("uid").getValue(String.class);
+                    String soLuongMua=dataSnapshot.child("soLuongMua").getValue(String.class);
+                    String hinhanh=dataSnapshot.child("hinhanh").getValue(String.class);
+                    String status=dataSnapshot.child("status").getValue(String.class);
+                    CartList cartList = new CartList(maSP,tenSP,soLuongMua,check,gia,uid,hinhanh);
+                    cartList.setStatus(status);
+                    cartLists.add(cartList);
+                    i++;
+                }
+                donDatHangAdapter.updateDDH(cartLists);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     @Override

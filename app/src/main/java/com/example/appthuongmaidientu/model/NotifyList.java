@@ -32,4 +32,9 @@ public class NotifyList {
         this.status = status;
         this.content = content;
     }
+
+    @Override
+    public String toString() {
+        return "Nội dung: "+this.content;
+    }
 }

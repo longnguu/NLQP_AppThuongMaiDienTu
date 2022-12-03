@@ -119,6 +119,7 @@ public class LoginActivity extends AppCompatActivity {
                         intent.putExtra("imgUS",imgUS);
                         intent.putExtra("anhnen",anhnen);
                         intent.putExtra("mobile",mobile);
+                        intent.putExtra("acti","Login");
                         MemoryData.saveData("+84"+phone.substring(1),LoginActivity.this);
                         System.out.println("abc"+mobile);
                         startActivity(intent);

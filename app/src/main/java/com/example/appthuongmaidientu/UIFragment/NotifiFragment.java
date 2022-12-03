@@ -80,7 +80,31 @@ public class NotifiFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-//        
+        listView = view.findViewById(R.id.lvNotify);
+
+        databaseReference.child("ThongBao").child(getActivity().getIntent().getStringExtra("mobile")).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                notifyLists.clear();
+                for (DataSnapshot dataSnapshot:snapshot.getChildren()){
+                    for (DataSnapshot dataSnapshot1:dataSnapshot.getChildren()){
+                        if (dataSnapshot1.child("content").getValue(String.class)!=null)
+                            notifyLists.add(new NotifyList(dataSnapshot1.child("id").getValue(String.class),dataSnapshot1.child("status").getValue(String.class),dataSnapshot1.child("content").getValue(String.class)));
+                        System.out.println(dataSnapshot1.child("content").getValue(String.class));
+                    }
+                }
+                if (!notifyLists.isEmpty()){
+                    arrayAdapter  = new ArrayAdapter<NotifyList>(getContext(), android.R.layout.simple_list_item_1 , notifyLists);
+                    listView.setAdapter(arrayAdapter);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
 
 

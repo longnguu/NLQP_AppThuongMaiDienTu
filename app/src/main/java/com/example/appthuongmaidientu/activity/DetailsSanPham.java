@@ -89,6 +89,7 @@ public class DetailsSanPham extends AppCompatActivity {
             public void onClick(View view) {
                 int slg = Integer.parseInt(editText.getText().toString().split("/")[0]);
                 CartList cartList = new CartList(maSP,namesp,String.valueOf(slg),"0",giasp,uid,img);
+                cartList.setSlb(slcSP);
                 databaseReference.child("GioHang").child(mobile).child(maSP).setValue(cartList);
             }
         });
@@ -124,7 +125,7 @@ public class DetailsSanPham extends AppCompatActivity {
                     SanPham sanPham = new SanPham(ten);
                     sanPham.setImg(dataSnapshot.child("img").getValue(String.class));
                     sanPham.setMaSP(dataSnapshot.getKey());
-                    sanPham.setUID(getIntent().getStringExtra("mobile"));
+                    sanPham.setUID(getIntent().getStringExtra("UID"));
                     sanPham.setMota(dataSnapshot.child("mota").getValue(String.class));
                     sanPham.setGia(dataSnapshot.child("gia").getValue(String.class));
                     sanPham.setDaBan(dataSnapshot.child("daBan").getValue(String.class));
