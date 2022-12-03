@@ -19,6 +19,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.appthuongmaidientu.R;
 
+import com.example.appthuongmaidientu.activity.EditUserActivity;
 import com.example.appthuongmaidientu.activity.LoginActivity;
 import com.example.appthuongmaidientu.activity.QuanLySanPhamActivity;
 import com.google.firebase.database.DatabaseReference;
@@ -76,7 +77,16 @@ public class ProfileFragment extends Fragment {
         AnhXa(view);
         Picasso.get().load(getActivity().getIntent().getStringExtra("imgUS")).into(imgProfile);
         nameProfile.setText(getActivity().getIntent().getStringExtra("name"));
-        //Picasso.get().load(getActivity().getIntent().getStringExtra("anhnen")).into(imgBackground);
+//        Picasso.get().load(getActivity().getIntent().getStringExtra("anhnen")).into(imgBackground);
+        prThongTin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), EditUserActivity.class);
+                intent.putExtra("mobile",getActivity().getIntent().getStringExtra("mobile"));
+                startActivity(intent);
+
+            }
+        });
         prQLSP.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -139,7 +149,7 @@ public class ProfileFragment extends Fragment {
         topCV = getActivity().findViewById(R.id.topnav);
         topSV = getActivity().findViewById(R.id.topSearchView);
         scrollView = view.findViewById(R.id.scrollViewProfile);
-        // imgBackground=view.findViewById(R.id.imgBackgroundFrProfile);
+//         imgBackground=view.findViewById(R.id.imgBackgroundFrProfile);
     }
 
 

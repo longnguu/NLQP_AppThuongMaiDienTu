@@ -44,7 +44,6 @@ public class SanPhamAdapter extends RecyclerView.Adapter<SanPhamAdapter.ViewHold
         holder.giaSP.setText(sanPham.getGia()+" VND");
         holder.slbSP.setText("Đã bán: "+sanPham.getDaBan());
         Picasso.get().load(sanPham.getImg()).into(holder.imgSP);
-        System.out.println(sanPham.getImg()+"abc"+sanPham.getTen());
         holder.layoutItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

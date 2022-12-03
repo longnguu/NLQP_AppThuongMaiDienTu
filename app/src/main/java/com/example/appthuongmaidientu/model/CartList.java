@@ -8,6 +8,16 @@ public class CartList {
     String gia;
     String uid;
     String hinhanh;
+    String slb;
+    String status;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     public CartList(String maSP, String tenSP, String soLuongMua, String check, String gia, String uid, String hinhanh) {
         this.maSP = maSP;
@@ -21,6 +31,14 @@ public class CartList {
 
     public String getHinhanh() {
         return hinhanh;
+    }
+
+    public String getSlb() {
+        return slb;
+    }
+
+    public void setSlb(String slb) {
+        this.slb = slb;
     }
 
     public void setHinhanh(String hinhanh) {

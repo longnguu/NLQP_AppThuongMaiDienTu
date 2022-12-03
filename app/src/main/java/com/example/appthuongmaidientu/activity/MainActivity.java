@@ -183,6 +183,7 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
+
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -222,6 +223,10 @@ public class MainActivity extends AppCompatActivity {
 
         viewPageAdapter = new ViewPageAdapter(getSupportFragmentManager(), FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         viewPager.setAdapter(viewPageAdapter);
+        if (getIntent().getStringExtra("acti").equals("cart")){
+            viewPager.setCurrentItem(1);
+            bottomNavigationView.setSelectedItemId(R.id.navorder);
+        }
     }
 
     private void callQuery(String s) {
