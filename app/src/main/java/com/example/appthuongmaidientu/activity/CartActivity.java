@@ -126,11 +126,13 @@ public class CartActivity extends AppCompatActivity {
                                     databaseReference.child("DonDatHang").child(getIntent().getStringExtra("mobile")).child(cartLists.get(i).getMaSP()).setValue(cartLists.get(i));
                                     databaseReference.child("DonDatHang").child(getIntent().getStringExtra("mobile")).child(cartLists.get(i).getMaSP()).child("status").setValue("Chờ xác nhận");
 
-                                    String nd= "Bạn cần giao "+cartLists.get(i).getSoLuongMua()+" sản phẩm: "+cartLists.get(i).getTenSP()+" đến địa chỉ: "+diaChi+" và nhận được: "+Long.parseLong(cartLists.get(i).getGia())*Long.parseLong(cartLists.get(i).getSoLuongMua())+" VNĐ. Gi chú của khách hàng: "+m_Text;
+                                    String nd= "Bạn cần giao "+cartLists.get(i).getSoLuongMua()+" sản phẩm: "+cartLists.get(i).getTenSP()+" đến địa chỉ: "+diaChi+" SDT khách hàng: "+getIntent().getStringExtra("mobile") +" và nhận được: "+Long.parseLong(cartLists.get(i).getGia())*Long.parseLong(cartLists.get(i).getSoLuongMua())+" VNĐ. Ghi chú của khách hàng: "+m_Text;
                                     databaseReference.child("ThongBao").child(cartLists.get(i).getUid()).child(currentTimeStamp).child(String.valueOf(i)).child("content").setValue(nd);
                                     databaseReference.child("ThongBao").child(cartLists.get(i).getUid()).child(currentTimeStamp).child(String.valueOf(i)).child("status").setValue("0");
                                     databaseReference.child("ThongBao").child(cartLists.get(i).getUid()).child(currentTimeStamp).child(String.valueOf(i)).child("id").setValue(String.valueOf(i));
                                     databaseReference.child("ThongBao").child(cartLists.get(i).getUid()).child(currentTimeStamp).child(String.valueOf(i)).child("idTB").setValue(currentTimeStamp);
+                                    databaseReference.child("ThongBao").child(cartLists.get(i).getUid()).child(currentTimeStamp).child(String.valueOf(i)).child("idKH").setValue(getIntent().getStringExtra("mobile"));
+                                    databaseReference.child("ThongBao").child(cartLists.get(i).getUid()).child(currentTimeStamp).child(String.valueOf(i)).child("idSP").setValue(cartLists.get(i).getMaSP());
 
                                     String maSP=cartLists.get(i).getMaSP();
                                     CartList cartList=cartLists.get(i);
@@ -266,7 +268,6 @@ public class CartActivity extends AppCompatActivity {
                 intentMain.putExtra("acti","cart");
                 intentMain.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
             }

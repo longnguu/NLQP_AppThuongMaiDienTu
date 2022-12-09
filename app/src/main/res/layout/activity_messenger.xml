@@ -10,22 +10,27 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp">
+
         <ImageView
             android:layout_width="35dp"
             android:layout_height="35dp"
-            android:layout_margin="10dp"
             android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
             android:padding="6dp"
-            android:src="@drawable/icon_search">
-        </ImageView>
+            android:id="@+id/btn_backMess"
+            android:src="@drawable/icon_back"></ImageView>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Messenger"
-            android:textColor="#424242"
-            android:textStyle="bold"
             android:layout_centerInParent="true"
-            android:textSize="18dp"/>
+            android:text="Messenger"
+            android:textColor="@color/yellow_pri"
+            android:textSize="18dp"
+            android:textStyle="bold" />
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:layout_width="35dp"

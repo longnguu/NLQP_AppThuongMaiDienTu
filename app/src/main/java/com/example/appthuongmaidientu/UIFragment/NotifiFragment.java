@@ -99,7 +99,7 @@ public class NotifiFragment extends Fragment {
                 for (DataSnapshot dataSnapshot:snapshot.getChildren()){
                     for (DataSnapshot dataSnapshot1:dataSnapshot.getChildren()){
                         if (dataSnapshot1.child("content").getValue(String.class)!=null)
-                            notifyLists.add(new NotifyList(dataSnapshot1.child("id").getValue(String.class),dataSnapshot1.child("status").getValue(String.class),dataSnapshot1.child("content").getValue(String.class)));
+                            notifyLists.add(new NotifyList(dataSnapshot1.child("id").getValue(String.class),dataSnapshot1.child("status").getValue(String.class),dataSnapshot1.child("content").getValue(String.class),dataSnapshot1.child("idKH").getValue(String.class),dataSnapshot1.child("idTB").getValue(String.class),dataSnapshot1.child("idSP").getValue(String.class)));
                     }
                 }
                 notifyAdapter.update(notifyLists);

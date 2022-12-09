@@ -7,7 +7,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 
 import com.example.appthuongmaidientu.Adapter.MessengerAdapter;
 import com.example.appthuongmaidientu.R;
@@ -33,10 +37,12 @@ public class MessengerActivity extends AppCompatActivity {
     ProgressDialog progressDialog;
     List<MessengerList> messengerLists = new ArrayList<>();
     String lastMessenger = "";
+    Intent intentMain;
     MessengerAdapter messengerAdapter;
     String chatKey = "";
     int unseenMessenger = 0;
     private boolean dataSet;
+    ImageView btn_back;
     int i;
     int max;
 
@@ -48,12 +54,24 @@ public class MessengerActivity extends AppCompatActivity {
         email = getIntent().getStringExtra("email");
         name = getIntent().getStringExtra("name");
 
+        btn_back= findViewById(R.id.btn_backMess);
+        GetIntent();
+        btn_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                intentMain.putExtra("acti","login");
+                startActivity(intentMain);
+            }
+        });
+
+
         profilePic = (CircleImageView) findViewById(R.id.userProfilePicMessUI);
 
         progressDialog = new ProgressDialog(this);
         progressDialog.setCancelable(false);
         progressDialog.setMessage("Loading...");
         progressDialog.show();
+
 
 
         listMessengerRecyclerView = (RecyclerView) findViewById(R.id.listMessengerRecycleView);
@@ -77,23 +95,6 @@ public class MessengerActivity extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 progressDialog.dismiss();
-            }
-        });
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                i=0;
-                for (DataSnapshot dataSnapshot:snapshot.child("chat").getChildren()){
-                    if (dataSnapshot.child("user_1").getValue(String.class).equals(MemoryData.getData(MessengerActivity.this)) || dataSnapshot.child("user_2").getValue(String.class).equals(MemoryData.getData(MessengerActivity.this))){
-                        i++;
-                        System.out.println(i);
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
             }
         });
         databaseReference.addValueEventListener(new ValueEventListener() {
@@ -170,6 +171,29 @@ public class MessengerActivity extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
+            }
+        });
+    }
+    public void GetIntent(){
+        databaseReference.child("users").child(mobile).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String email= snapshot.child("email").getValue(String.class);
+                String mobile= snapshot.child("sdt").getValue(String.class);
+                String name= snapshot.child("tenUser").getValue(String.class);
+                String imgUS= snapshot.child("imgUS").getValue(String.class);
+                String anhnen= snapshot.child("anhnen").getValue(String.class);
+                intentMain = new Intent(MessengerActivity.this, MainActivity.class);
+                intentMain.putExtra("name",name);
+                intentMain.putExtra("email",email);
+                intentMain.putExtra("imgUS",imgUS);
+                intentMain.putExtra("anhnen",anhnen);
+                intentMain.putExtra("mobile",mobile);
+                intentMain.putExtra("acti","cart");
+                intentMain.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
             }
         });
     }
