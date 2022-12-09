@@ -104,10 +104,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, MessengerActivity.class);
-                System.out.println(getIntent().getStringExtra("email"));
-                intent.putExtra("email", getIntent().getStringExtra("email"));
                 intent.putExtra("mobile", getIntent().getStringExtra("mobile"));
-                intent.putExtra("name", getIntent().getStringExtra("name"));
                 startActivity(intent);
             }
         });

@@ -8,6 +8,11 @@
     tools:context=".activity.ChatActivity">
 
     <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/chatBottomBar">
+
+    <RelativeLayout
         android:id="@+id/chatTopBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -57,15 +62,16 @@
                 android:textColor="#00C853"/>
         </LinearLayout>
     </RelativeLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/chatRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/chatTopBar">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/chatRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/chatTopBar"
-        android:layout_above="@+id/chatBottomBar">
+        </androidx.recyclerview.widget.RecyclerView>
+    </RelativeLayout>
 
-    </androidx.recyclerview.widget.RecyclerView>
+
 
     <RelativeLayout
         android:id="@+id/chatBottomBar"

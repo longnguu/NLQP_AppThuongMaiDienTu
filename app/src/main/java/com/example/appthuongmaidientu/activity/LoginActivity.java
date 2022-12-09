@@ -1,5 +1,6 @@
 package com.example.appthuongmaidientu.activity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -37,6 +38,7 @@ public class LoginActivity extends AppCompatActivity {
     CheckBox checkBox_rememberUP;
     User user;
     private String phone;
+    ProgressDialog progressDialog;
 
     DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
 
@@ -50,6 +52,9 @@ public class LoginActivity extends AppCompatActivity {
         AnhXa();
         edt_phone.setText(getIntent().getStringExtra("phone"));
         edt_password.setText(getIntent().getStringExtra("password"));
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setCancelable(false);
+        progressDialog.setMessage("Loading...");
 
         //Hiển thị tài khoản đã lưu
         sharedPreferences = getSharedPreferences("dataLogin", MODE_PRIVATE);
@@ -95,6 +100,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
     public void checkLogin(View view) {
+        progressDialog.show();
         String phone = edt_phone.getText().toString();
         String password = edt_password.getText().toString();
         if (phone.isEmpty() || password.isEmpty()) {
@@ -121,6 +127,7 @@ public class LoginActivity extends AppCompatActivity {
                         intent.putExtra("mobile",mobile);
                         intent.putExtra("acti","Login");
                         MemoryData.saveData("+84"+phone.substring(1),LoginActivity.this);
+                        progressDialog.dismiss();
                         System.out.println("abc"+mobile);
                         startActivity(intent);
                         if (checkBox_rememberUP.isChecked()) {
@@ -136,12 +143,16 @@ public class LoginActivity extends AppCompatActivity {
                             editor.putBoolean("REMEMBER", false);
                             editor.commit();
                         }
-                    }else Toast.makeText(getApplicationContext(), "Sai thông tin tài khoản hoặc mật khẩu",
-                            Toast.LENGTH_SHORT).show();
+                    }else {
+                        Toast.makeText(getApplicationContext(), "Sai thông tin tài khoản hoặc mật khẩu",
+                                Toast.LENGTH_SHORT).show();
+                        progressDialog.dismiss();
+                    }
                 }
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
+                    progressDialog.dismiss();
                 }
             });
         }

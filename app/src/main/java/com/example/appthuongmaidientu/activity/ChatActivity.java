@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -44,6 +45,7 @@ public class ChatActivity extends AppCompatActivity {
     ChatAdapter chatAdapter;
     public static boolean loadingFirstTime= true;
     private final List<ChatList> chatLists = new ArrayList<>();
+    ImageView btn_back;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +62,8 @@ public class ChatActivity extends AppCompatActivity {
         final String getProfilePic = getIntent().getStringExtra("profilePic");
         chatKey = getIntent().getStringExtra("chatKey");
         final String getMobile= getIntent().getStringExtra("mobile");
+        btn_back = findViewById(R.id.back_buttonChat);
+
 
 
         nameChat.setText(getName);
@@ -67,6 +71,15 @@ public class ChatActivity extends AppCompatActivity {
         if (!getProfilePic.isEmpty()){
             Picasso.get().load(getProfilePic).into(profilePicChat);
         }
+        btn_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent= new Intent(ChatActivity.this,MessengerActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.putExtra("mobile",getUserMobile);
+                startActivity(intent);
+            }
+        });
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -137,4 +150,5 @@ public class ChatActivity extends AppCompatActivity {
         edtChat = (EditText) findViewById(R.id.edtChat);
         chattingRecyclerView = (RecyclerView) findViewById(R.id.chatRecyclerView);
     }
+
 }

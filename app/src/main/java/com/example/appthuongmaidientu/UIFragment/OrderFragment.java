@@ -90,7 +90,7 @@ public class OrderFragment extends Fragment {
         GridLayoutManager linearLayoutManager = new GridLayoutManager(getContext(), 1, RecyclerView.VERTICAL, false);
         recyclerView.setAdapter(donDatHangAdapter);
         recyclerView.setLayoutManager(linearLayoutManager);
-        databaseReference.child("DonDatHang").child(getActivity().getIntent().getStringExtra("mobile")).addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseReference.child("DonDatHang").child(getActivity().getIntent().getStringExtra("mobile")).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 cartLists.clear();
