@@ -97,6 +97,26 @@ public class MessengerActivity extends AppCompatActivity {
                 progressDialog.dismiss();
             }
         });
+
+        databaseReference.child("chat").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                i=0;
+                for (DataSnapshot dataSnapshot:snapshot.getChildren()){
+                    if (dataSnapshot.hasChild("user_1") && dataSnapshot.hasChild("user_2") && dataSnapshot.hasChild("messenger")) {
+                    if (dataSnapshot.child("user_1").getValue(String.class).equals(MemoryData.getData(MessengerActivity.this)) || dataSnapshot.child("user_2").getValue(String.class).equals(MemoryData.getData(MessengerActivity.this))){
+                        i++;
+                        System.out.println(i);
+                    }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -132,15 +152,15 @@ public class MessengerActivity extends AppCompatActivity {
                                                     long getLastseenMsg = 0;
                                                     if (!MemoryData.getLastMsgTs(MessengerActivity.this, chatKey).isEmpty())
                                                         getLastseenMsg = Long.parseLong(MemoryData.getLastMsgTs(MessengerActivity.this, chatKey).substring(0,10));
-//                                                   // if (chatDataSnapShot.child("mobile").getValue(String.class).equals(MemoryData.getData(UIMessenger.this))){
-//                                                        lastMessenger = "Bạn: "+chatDataSnapShot.child("msg").getValue(String.class);
-//                                                    }else
+                                                    if (chatDataSnapShot.child("mobile").getValue(String.class).equals(MemoryData.getData(MessengerActivity.this))){
+                                                        lastMessenger = "Bạn: "+chatDataSnapShot.child("msg").getValue(String.class);
+                                                    }else
                                                     lastMessenger = chatDataSnapShot.child("msg").getValue(String.class);
                                                     if (getMessngerKey > getLastseenMsg) {
                                                         unseenMessenger++;
                                                     }
                                                 }
-                                                if (messengerLists.size()>=i-1) {
+                                                if (messengerLists.size()>=i) {
                                                     messengerLists.clear();
                                                 }
                                                 MessengerList messengerList = new MessengerList(getName, getMobile, lastMessenger, profilePic, chatKey, unseenMessenger);
